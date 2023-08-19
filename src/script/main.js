@@ -21,6 +21,7 @@ document.getElementById("selectedSkinImage").onchange = (e) => {
         totemData.skin = f;
         document.getElementById('filename').innerText = f.name;
         const ctx = document.getElementById('imagePreview').getContext('2d');
+        ctx.clearRect(0, 0, 8, 8);
         ctx.drawImage(img, 8, 8, 8, 8, 0, 0, 8, 8);
         ctx.drawImage(img, 40, 8, 8, 8, 0, 0, 8, 8);
     });
