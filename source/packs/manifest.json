@@ -1,0 +1,29 @@
+{
+    "format_version": 2,
+    "header": {
+        "description": "Use the skin you want to make the Totem in your hand ;3\nCreated by Asaki Zuki, thank you for using it ;-;",
+        "name": "",
+        "uuid": "",
+        "version": [
+            1,
+            0,
+            0
+        ],
+        "min_engine_version": [
+            1,
+            19,
+            70
+        ]
+    },
+    "modules": [
+        {
+            "type": "resources",
+            "uuid": "743f6949-53be-44b6-b326-398005028819",
+            "version": [
+                0,
+                0,
+                1
+            ]
+        }
+    ]
+}

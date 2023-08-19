@@ -1,0 +1,27 @@
+{
+    "format_version": "1.10.0",
+    "render_controllers": {
+        "controller.render.totem_right": {
+            "geometry": "geometry.totem_right",
+            "materials": [
+                {
+                    "*": "material.default"
+                }
+            ],
+            "textures": [
+                "texture.default"
+            ]
+        },
+        "controller.render.totem_left": {
+            "geometry": "geometry.totem_left",
+            "materials": [
+                {
+                    "*": "material.default"
+                }
+            ],
+            "textures": [
+                "texture.default"
+            ]
+        }
+    }
+}

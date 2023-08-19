@@ -1,0 +1,40 @@
+{
+    "format_version": "1.10.0",
+    "minecraft:attachable": {
+        "description": {
+            "identifier": "minecraft:totem_of_undying",
+            "materials": {
+                "default": "skeleton"
+            },
+            "textures": {
+                "default": "totem.png"
+            },
+            "geometry": {
+                "totem_left": "geometry.asa_totem_left",
+                "totem_right": "geometry.asa_totem_right"
+            },
+            "animations": {
+                "first_person": "animation.totem.first_person",
+                "totem_animation": "animation.totem.animation"
+            },
+            "scripts": {
+                "animate": [
+                    {
+                        "first_person": "c.is_first_person"
+                    },
+                    {
+                        "totem_animation": "!c.is_first_person"
+                    }
+                ]
+            },
+            "render_controllers": [
+                {
+                    "controller.render.totem_right": "query.get_equipped_item_name('main_hand') == 'totem_of_undying'"
+                },
+                {
+                    "controller.render.totem_left": "query.get_equipped_item_name('off_hand') == 'totem_of_undying'"
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,36 @@
+{
+    "format_version": "1.10.0",
+    "animations": {
+        "animation.totem.first_person": {
+            "loop": true,
+            "bones": {
+                "rightitem": {
+                    "position": [
+                        6,
+                        -13,
+                        17
+                    ],
+                    "rotation": [
+                        28,
+                        -25,
+                        200
+                    ],
+                    "scale": 0.9
+                },
+                "leftitem": {
+                    "position": [
+                        -100,
+                        -33,
+                        93
+                    ],
+                    "rotation": [
+                        -5,
+                        -55,
+                        2
+                    ],
+                    "scale": 2.6
+                }
+            }
+        }
+    }
+}

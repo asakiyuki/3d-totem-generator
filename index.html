@@ -1,0 +1,62 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Totem Skin</title>
+
+    <link rel="stylesheet" href="./src/style/main.css">
+    <link rel="icon" type="image/x-icon" href="./src/texture/icon.jpg">
+    <style>
+        @font-face {
+            font-family: minecraft;
+            src: url('./src/font/minecraft.otf');
+        }
+
+        @font-face {
+            font-family: minecraft-ten;
+            src: url('./src/font/minecraft-ten.ttf');
+        }
+    </style>
+
+    <script src="./libarries/jszip.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+</head>
+
+<body>
+    <div class="header">Custom Totem Skin</div>
+    <div class="content">
+        <div class="description">Create resource packs to use your skin as a totem in Minecraft: Bedrock Edition<br>
+            + Creator: <a href="https://www.youtube.com/@main.asakizuki" class="link">Asaki Zuki</a><br>
+            + Source Code: <a href="https://www.youtube.com/@main.asakizuki" class="link">Github</a></div>
+        <div class="description">
+            <div class="title">How to use this tool</div>
+            Very simple to use, you just need to give the skin you want and download it!
+        </div>
+
+        <div class="importSkin">
+            <div class="btn">
+                <input id="selectedSkinImage" type="file" width="48" height="48" accept="image/png">
+                <button>Import Skin</button>
+                <div class="filename"><a id="filename">No file chosen</a></div>
+            </div>
+            <img draggable="false" class="previewImage">
+        </div>
+        <div class="selectedButton">
+            <a>Skin Type</a>
+            <div class="skinTypeSelectedButton">
+                <button id="setToBigHand" class="active">Big Hand</button>
+                <button id="setToSmallHand">Small Hand</button>
+            </div>
+        </div>
+        <div class="downloadButton">
+            <button id="download">Download</button>
+            <input id="packName" placeholder="Pack name...">
+        </div>
+
+        <canvas style="width: 0px; height: 0px;" width="8" height="8" id="imagePreview"></canvas>
+    </div>
+    <script src="./src/script/main.js"></script>
+</body>
+
+</html>
