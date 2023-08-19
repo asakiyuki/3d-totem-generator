@@ -218,6 +218,7 @@ div.downloadButton input::placeholder {
 }
 
 div.description {
+    user-select: text;
     margin-top: 5px;
     margin-bottom: 5px;
     width: calc(100% - 20px);
@@ -227,6 +228,7 @@ div.description {
 }
 
 div.title {
+    user-select: text;
     font-family: minecraft-ten;
     color: #FFF;
     font-size: 20px;
@@ -234,6 +236,7 @@ div.title {
 }
 
 a.link {
+    user-select: text;
     color: #08F;
     cursor: pointer;
 }

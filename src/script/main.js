@@ -10,19 +10,25 @@ generateUUID = () => {
 }
 document.getElementById("selectedSkinImage").onchange = (e) => {
     const f = e.srcElement.files[0];
-    document.getElementById('filename').innerText = f.name;
     const r = new FileReader();
     r.readAsDataURL(f);
-    totemData.skin = f;
     r.addEventListener('load', async (g) => {
-        const b = await (await fetch(g.target.result)).blob();
-        document.getElementsByClassName('previewImage')[0].src = URL.createObjectURL(b);
+        const b = await (await fetch(g.target.result)).blob(),
+            img = document.getElementsByClassName('previewImage')[0],
+            bakSrc = img.src;
+        img.src = URL.createObjectURL(b);
 
-        await new Promise(res => setTimeout(res, 5));
-        const ctx = document.getElementById('imagePreview').getContext('2d'),
-            img = document.getElementsByClassName('previewImage')[0];
-        ctx.drawImage(img, 8, 8, 8, 8, 0, 0, 8, 8);
-        ctx.drawImage(img, 40, 8, 8, 8, 0, 0, 8, 8);
+        await new Promise(res => setTimeout(res, 2));
+        if (img.naturalWidth === 64 && img.naturalHeight === 64) {
+            totemData.skin = f;
+            document.getElementById('filename').innerText = f.name;
+            const ctx = document.getElementById('imagePreview').getContext('2d');
+            ctx.drawImage(img, 8, 8, 8, 8, 0, 0, 8, 8);
+            ctx.drawImage(img, 40, 8, 8, 8, 0, 0, 8, 8);
+        } else {
+            img.src = bakSrc;
+            alert('You can only use 64x64 resolution skins')
+        }
     });
 }
 
@@ -69,11 +75,16 @@ document.getElementById('download').onclick = async () => {
                 document.body.removeChild(a);
             })
         }, 'image/png', '-moz-parse-options:format=bmp;bpp=128')
+    } else {
+        alert('Choose your skin before download!')
     }
 }
 document.getElementById("packName").oninput = (v) => {
     totemData.packName = (v.srcElement.value === '') ? 'Custom Totem Skin' : v.srcElement.value;
 }
+document.getElementById("packName").addEventListener('keypress', e => {
+    if (e.key === 'Enter' && !e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey) document.getElementById('download').click();
+})
 
 updateHand = () => {
     document.getElementById('setToBigHand').className = (totemData.isSmallHand) ? "" : "active";
