@@ -14,21 +14,15 @@ document.getElementById("selectedSkinImage").onchange = (e) => {
     r.readAsDataURL(f);
     r.addEventListener('load', async (g) => {
         const b = await (await fetch(g.target.result)).blob(),
-            img = document.getElementsByClassName('previewImage')[0],
-            bakSrc = img.src;
+            img = document.getElementsByClassName('previewImage')[0]
         img.src = URL.createObjectURL(b);
 
         await new Promise(res => setTimeout(res, 2));
-        if (img.naturalWidth === 64 && img.naturalHeight === 64) {
-            totemData.skin = f;
-            document.getElementById('filename').innerText = f.name;
-            const ctx = document.getElementById('imagePreview').getContext('2d');
-            ctx.drawImage(img, 8, 8, 8, 8, 0, 0, 8, 8);
-            ctx.drawImage(img, 40, 8, 8, 8, 0, 0, 8, 8);
-        } else {
-            img.src = bakSrc;
-            alert('You can only use 64x64 resolution skins')
-        }
+        totemData.skin = f;
+        document.getElementById('filename').innerText = f.name;
+        const ctx = document.getElementById('imagePreview').getContext('2d');
+        ctx.drawImage(img, 8, 8, 8, 8, 0, 0, 8, 8);
+        ctx.drawImage(img, 40, 8, 8, 8, 0, 0, 8, 8);
     });
 }
 
