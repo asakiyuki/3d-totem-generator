@@ -26,7 +26,7 @@ document.getElementById('selectedTextureImage').onchange = (e) => {
 }
 document.getElementById("selectedSkinImage").onchange = (e) => {
     const f = e.srcElement.files[0];
-    if (['png', 'jpg', 'jpeg'].includes(f.type.match(/[a-z]+/g)?.[1])) {
+    if (f.type.match(/[a-z]+/g)?.[1] === 'png') {
         const r = new FileReader();
         r.readAsDataURL(f);
         r.addEventListener('load', async (g) => {
@@ -38,7 +38,7 @@ document.getElementById("selectedSkinImage").onchange = (e) => {
             totemData.skin = f;
             document.getElementById('filename').innerText = f.name;
         });
-    } else alert('Only png, jpg, jpeg can be used!')
+    } else alert('Only png can be used!')
 }
 {
     $("#setToSmallHand").mouseup(() => {
