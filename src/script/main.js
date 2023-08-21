@@ -1,12 +1,23 @@
 const totemData = {
     isSmallHand: false,
     packName: "Custom Totem Skin",
+    textureType: 0,
+    totemTexture: undefined,
     skin: undefined
 };
 generateUUID = () => {
     return "$$$$$$$$-$$$$-$$$$-$$$$-$$$$$$$$$$$$"
         .replaceAll(/\$/g,
             () => Math.floor(Math.random() * 16).toString(16));
+}
+document.getElementById('selectedTextureImage').onchange = (e) => {
+    const r = new FileReader(), f = e.srcElement.files[0];
+    totemData.totemTexture = f;
+    r.readAsDataURL(f);
+    document.getElementById('filename2').innerText = f.name;
+    r.addEventListener('load', (g) => {
+        fetch(g.target.result).then(v => v.blob()).then(v => document.getElementsByClassName('previewImage')[1].src = URL.createObjectURL(v));
+    })
 }
 document.getElementById("selectedSkinImage").onchange = (e) => {
     const f = e.srcElement.files[0];
@@ -20,22 +31,45 @@ document.getElementById("selectedSkinImage").onchange = (e) => {
         await new Promise(res => setTimeout(res, 2));
         totemData.skin = f;
         document.getElementById('filename').innerText = f.name;
-        const ctx = document.getElementById('imagePreview').getContext('2d');
-        ctx.clearRect(0, 0, 8, 8);
-        ctx.drawImage(img, 8, 8, 8, 8, 0, 0, 8, 8);
-        ctx.drawImage(img, 40, 8, 8, 8, 0, 0, 8, 8);
     });
 }
 
-$("#setToSmallHand").click(() => {
+$("#setToSmallHand").mouseup(() => {
     totemData.isSmallHand = true; updateHand();
 })
-$("#setToBigHand").click(() => {
+$("#setToBigHand").mouseup(() => {
     totemData.isSmallHand = false; updateHand();
 })
+$("#automatic").mouseup(() => {
+    totemData.textureType = 0; updateTexture();
+})
+$("#vanilla_texture").mouseup(() => {
+    totemData.textureType = 1; updateTexture();
+})
+$("#custom_texture").mouseup(() => {
+    totemData.textureType = 2; updateTexture();
+})
 document.getElementById('download').onclick = async () => {
+    const canvas = document.getElementById('imagePreview'), ctx = canvas.getContext('2d'), img = document.getElementsByClassName('previewImage')[0];
+    const { naturalHeight, naturalWidth } = img;
     if (totemData.skin) {
-        document.getElementById('imagePreview').toBlob(async (i) => {
+        if (![64, 128].includes(naturalHeight) && ![64, 128].includes(naturalWidth)) {
+            alert('The image you entered is not a Minecraft skin!');
+            return;
+        }
+        if (naturalHeight === 64 && naturalWidth === 64) {
+            canvas.setAttribute('width', '8'); canvas.setAttribute('height', '8');
+            ctx.clearRect(0, 0, 8, 8);
+            ctx.drawImage(img, 8, 8, 8, 8, 0, 0, 8, 8);
+            ctx.drawImage(img, 40, 8, 8, 8, 0, 0, 8, 8);
+        } else {
+            canvas.setAttribute('width', '16'); canvas.setAttribute('height', '16');
+            ctx.clearRect(0, 0, 16, 16);
+            ctx.drawImage(img, 16, 16, 16, 16, 0, 0, 16, 16);
+            ctx.drawImage(img, 80, 16, 16, 16, 0, 0, 16, 16);
+        }
+
+        canvas.toBlob(async (i) => {
             let manifest = await (await fetch('./source/packs/manifest.json')).json();
             manifest.header.name = totemData.packName;
             manifest.header.uuid = generateUUID();
@@ -51,7 +85,7 @@ document.getElementById('download').onclick = async () => {
             const zip = new JSZip();
             zip.file('manifest.json', manifest);
             zip.file('totem.png', totemData.skin, { base64: true });
-            zip.file('pack_icon.png', (i), { base64: true });
+            zip.file('pack_icon.png', i, { base64: true });
             const animations = zip.folder('animations');
             animations.file('totem_firstperson.json', totemFirstPerson);
             animations.file('totem.json', totemAnims);
@@ -60,6 +94,12 @@ document.getElementById('download').onclick = async () => {
             const model = zip.folder('models').folder('entity');
             model.file('totem_left.geo.json', totemModelLeft);
             model.file('totem_right.geo.json', totemModelRight);
+
+            if (([0, 2].includes(totemData.textureType) || !totemData.totemTexture) && totemData.textureType !== 1)
+                if (totemData.textureType === 2 && totemData.totemTexture)
+                    zip.folder('textures').folder('items').file('totem.png', totemData.totemTexture);
+                else
+                    zip.folder('textures').folder('items').file('totem.png', i, { base64: true });
 
             zip.generateAsync({ type: "blob" }).then(c => {
                 const a = document.createElement('a');
@@ -85,3 +125,9 @@ updateHand = () => {
     document.getElementById('setToBigHand').className = (totemData.isSmallHand) ? "" : "active";
     document.getElementById('setToSmallHand').className = (totemData.isSmallHand) ? "active" : "";
 }
+updateTexture = () => {
+    document.getElementById('automatic').className = (totemData.textureType === 0) ? "active" : "";
+    document.getElementById('vanilla_texture').className = (totemData.textureType === 1) ? "active" : "";
+    document.getElementById('custom_texture').className = (totemData.textureType === 2) ? "active" : "";
+    document.getElementById('importTexturePanel').className = (totemData.textureType === 2) ? "btn" : "btn inputDisable";
+};

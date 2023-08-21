@@ -1,48 +1,72 @@
+*,
+div.inputDisable div.filename {
+    user-select: none
+}
+
+div.header,
+div.title {
+    font-family: minecraft-ten
+}
+
+a.link,
+div.description,
+div.filename a,
+div.title {
+    user-select: text
+}
+
+a.link,
+button,
+input {
+    cursor: pointer
+}
+
 * {
-    user-select: none;
     font-family: minecraft;
     color: #000;
-    font-size: 14px;
+    font-size: 14px
 }
 
 body {
-    /* overflow: hidden; */
-    padding: 0px;
-    margin: 0px;
-    background-color: #222;
+    padding: 0;
+    margin: 0;
+    background-color: #222
 }
 
 body::-webkit-scrollbar {
-    width: 5px;
+    width: 5px
 }
 
 body::-webkit-scrollbar-thumb {
-    background-color: #69696967;
+    background-color: #69696967
 }
 
 div.header {
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 30px;
     background-color: #dfdfdf;
     text-align: center;
     padding-top: 13px;
     padding-bottom: 13px;
-    font-family: minecraft-ten;
     z-index: 100;
     font-size: 25px;
     position: sticky;
-    border-bottom: 2px solid #c4c4c4;
+    border-bottom: 2px solid #c4c4c4
+}
+
+button,
+div.content,
+div.importSkin,
+div.selectedButton {
+    position: relative
 }
 
 div.content {
-    position: relative;
-    outline: 4px solid #191919;
+    outline: #191919 solid 4px;
     left: 50%;
-    padding: 20px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding: 5px 20px;
     transform: translateX(-50%);
     margin-top: 10px;
     margin-bottom: 10px;
@@ -50,88 +74,94 @@ div.content {
     max-width: calc(100% - 55px);
     border-top: 4px solid #4e4d4d;
     border-bottom: 4px solid #282828;
-    background-color: #3c3c3c;
+    background-color: #3c3c3c
 }
 
 div.selectedButton {
-    position: relative;
     width: 100%;
     height: 60px;
     border-bottom: 3px solid #282828;
-    margin-bottom: 10px;
+    margin-bottom: 10px
 }
 
 div.selectedButton a {
-    color: #FFF;
+    color: #fff
+}
+
+div.withImportTexture {
+    height: 170px
 }
 
 div.skinTypeSelectedButton {
     position: relative;
-    margin-bottom: 4px;
+    margin-bottom: 4px
+}
+
+div.withImportTexture div.importSkin {
+    margin-top: 7px;
+    border-bottom: none
 }
 
 div.skinTypeSelectedButton:active {
-    top: 1px;
+    top: 1px
 }
 
 button {
-    position: relative;
     height: 35px;
     padding-left: 15px;
     padding-right: 15px;
     border: none;
-    cursor: pointer;
     background-color: #ebebeb;
     border-bottom: 3px solid #535353;
-    outline: 2px solid #111;
+    outline: #111 solid 2px
 }
 
 button:hover {
-    background-color: #b4b2b2;
+    background-color: #b4b2b2
 }
 
 button:active {
     top: 4px;
     height: 30px;
-    border-bottom: 0px solid #535353;
-    background-color: #adadad;
+    border-bottom: 0 solid #535353;
+    background-color: #adadad
 }
 
 div.selectedButton button {
-    width: calc(50% - 5px);
+    width: calc(50% - 4px)
+}
+
+div.selectedButton div.totemTextureSelectedButton button {
+    width: calc(33.333% - 4px)
 }
 
 button.active {
     top: 3px;
-    color: #FFF;
+    color: #fff;
     height: 30px;
     border-image-slice: 1;
     border-image-source: linear-gradient(to left, #11bf01, #11bf01 40%, #FFF 40%, #FFF 60%, #11bf01 60%, #11bf01 100%);
-    border-bottom: 2px solid #ffffff;
-    background-color: #11bf01;
+    border-bottom: 2px solid #fff;
+    background-color: #11bf01
 }
 
-
-
-
 div.importSkin {
-    position: relative;
     width: 100%;
     height: 92px;
     padding-top: 15px;
     border-bottom: 3px solid #282828;
     margin-bottom: 5px;
-    padding-bottom: 5px;
+    padding-bottom: 5px
 }
 
 div.importSkin div.btn {
     padding-top: 10px;
     position: absolute;
-    left: 0px;
-    top: 0px;
+    left: 0;
+    top: 0;
     width: calc(100% - 114px);
     height: 94px;
-    border-right: 3px solid #282828;
+    border-right: 3px solid #282828
 }
 
 div.importSkin div.filename {
@@ -143,104 +173,123 @@ div.importSkin div.filename {
     width: calc(100% - 36px);
     height: 35px;
     background-color: #282828;
-    outline: 2px solid #111;
+    outline: #111 solid 2px;
     border-right: 4px solid #1b1b1b;
-    border-top: 4px solid #151515;
+    border-top: 4px solid #151515
 }
 
 div.importSkin div.filename:hover {
-    background-color: #252525;
+    background-color: #252525
+}
+
+div.downloadButton input,
+div.inputDisable div.filename:hover {
+    background-color: #282828
 }
 
 div.importSkin button {
-    width: calc(100% - 12px);
+    width: calc(100% - 12px)
 }
 
 div.filename a {
-    user-select: text;
     position: absolute;
     white-space: nowrap;
     left: 10px;
-    color: #FFF;
+    color: #fff;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-50%)
+}
+
+div.inputDisable input {
+    display: none
+}
+
+div.inputDisable button {
+    cursor: auto;
+    outline: #7e7e7e;
+    color: #7e7e7e
+}
+
+div.inputDisable button:hover {
+    background-color: #ebebeb
+}
+
+div.inputDisable button:active {
+    top: 0;
+    height: 35px;
+    border-bottom: 3px solid #535353;
+    background-color: #ebebeb
 }
 
 input {
     position: absolute;
     z-index: 100;
-    cursor: pointer;
     width: 100%;
     height: 35px;
-    opacity: 0;
+    opacity: 0
 }
 
 img.previewImage {
     position: absolute;
-    right: 0px;
-    top: 0px;
+    object-fit: contain;
+    right: 0;
+    top: 0;
     width: 100px;
     height: 100px;
     background-color: #333;
-    border: 1px solid #FFF;
+    border: 1px solid #fff
 }
 
 div.downloadButton {
     height: 40px;
     position: relative;
-    width: 100%;
+    width: 100%
 }
 
 div.downloadButton button {
-    width: 100px;
+    width: 100px
 }
 
 div.downloadButton input {
     opacity: 1;
     position: absolute;
-    right: 0px;
-    top: 0px;
+    right: 0;
+    top: 0;
     width: calc(100% - 105px);
     padding-left: 5px;
     padding-right: 5px;
-    outline: 1;
-    background-color: #282828;
-    outline: 2px solid #111;
+    outline: #111 solid 2px;
+    border: none;
     border-right: 4px solid #1b1b1b;
     border-top: 4px solid #151515;
-    color: #FFF;
+    color: #fff
 }
 
 div.downloadButton input::placeholder {
-    color: #FFF;
-    opacity: 0.5;
-    font-style: italic;
+    color: #fff;
+    opacity: .5;
+    font-style: italic
 }
 
 div.description {
-    user-select: text;
     margin-top: 5px;
     margin-bottom: 5px;
     width: calc(100% - 20px);
-    color: #FFF;
+    color: #fff;
     padding: 10px;
-    background-color: #000;
+    background-color: #000
 }
 
 div.title {
-    user-select: text;
-    font-family: minecraft-ten;
-    color: #FFF;
+    color: #fff;
     font-size: 20px;
-    margin-bottom: 2px;
+    margin-bottom: 2px
 }
 
 a.link {
-    user-select: text;
-    color: #08F;
-    cursor: pointer;
+    color: #08f
 }
 
 a.link:hover {
-    color: #09F;
+    color: #09f
 }
