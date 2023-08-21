@@ -26,8 +26,7 @@
 <body>
     <div class="header">3D Totem Generator</div>
     <div class="content">
-        <div class="description">Creating your own totem resource pack with player skin or picture in Minecraft: Bedrock
-            Edition<br>
+        <div class="description">Creating your own totem resource pack with player skin or picture in Minecraft<br>
             + Creator: <a href="https://www.youtube.com/@main.asakizuki" target="_blank" class="link">Asaki Zuki</a><br>
             + Translator: <a href="https://www.facebook.com/profile.php?id=100036150383726" target="_blank"
                 class="link">Vũ Phúc</a><br>
@@ -91,11 +90,18 @@
             </div>
             <div class="importSkin">
                 <div id="importTexturePanel" class="btn inputDisable">
-                    <input id="selectedTextureImage" type="file" width="48" height="48" accept="image/png" title="">
+                    <input id="selectedTextureImage" type="file" width="48" height="48" accept="image/*" title="">
                     <button>Import Texture</button>
                     <div class="filename"><a id="filename2">No file chosen</a></div>
                 </div>
                 <img draggable="false" class="previewImage">
+            </div>
+        </div>
+        <div class="selectedButton">
+            <a>Minecraft Version</a>
+            <div class="skinTypeSelectedButton">
+                <button id="bedrockVersion" class="active">Bedrock</button>
+                <button id="javaVersion">Java</button>
             </div>
         </div>
         <div class="downloadButton">
