@@ -1,18 +1,18 @@
 {
     "format_version": 2,
     "header": {
-        "description": "Use the skin you want to make the Totem in your hand ;3\nCreated by Asaki Zuki, thank you for using it ;-;",
+        "description": "",
         "name": "",
         "uuid": "",
         "version": [
             1,
             0,
-            0
+            1
         ],
         "min_engine_version": [
             1,
-            19,
-            70
+            18,
+            10
         ]
     },
     "modules": [
@@ -25,5 +25,17 @@
                 1
             ]
         }
-    ]
+    ],
+    "metadata": {
+        "authors": [
+            "Asaki Zuki"
+        ],
+        "license": "MIT",
+        "url": "https://asakizuki.github.io/Custom-Totem-Skin/",
+        "generated_with": {
+            "visual_code_studio": [
+                "1.81"
+            ]
+        }
+    }
 }

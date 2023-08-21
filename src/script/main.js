@@ -3,6 +3,7 @@ const totemData = {
     packName: "Custom Totem Skin",
     textureType: 0,
     totemTexture: undefined,
+    notFor3DTotem: false,
     skin: undefined
 };
 generateUUID = () => {
@@ -52,21 +53,23 @@ $("#custom_texture").mouseup(() => {
 document.getElementById('download').onclick = async () => {
     const canvas = document.getElementById('imagePreview'), ctx = canvas.getContext('2d'), img = document.getElementsByClassName('previewImage')[0];
     const { naturalHeight, naturalWidth } = img;
-    if (totemData.skin) {
-        if (![64, 128].includes(naturalHeight) && ![64, 128].includes(naturalWidth)) {
-            alert('The image you entered is not a Minecraft skin!');
-            return;
-        }
-        if (naturalHeight === 64 && naturalWidth === 64) {
-            canvas.setAttribute('width', '8'); canvas.setAttribute('height', '8');
-            ctx.clearRect(0, 0, 8, 8);
-            ctx.drawImage(img, 8, 8, 8, 8, 0, 0, 8, 8);
-            ctx.drawImage(img, 40, 8, 8, 8, 0, 0, 8, 8);
-        } else {
-            canvas.setAttribute('width', '16'); canvas.setAttribute('height', '16');
-            ctx.clearRect(0, 0, 16, 16);
-            ctx.drawImage(img, 16, 16, 16, 16, 0, 0, 16, 16);
-            ctx.drawImage(img, 80, 16, 16, 16, 0, 0, 16, 16);
+    if ((totemData.skin && !totemData.notFor3DTotem) || (totemData.totemTexture && totemData.notFor3DTotem)) {
+        if (!totemData.notFor3DTotem) {
+            if (![64, 128].includes(naturalHeight) && ![64, 128].includes(naturalWidth)) {
+                alert('Your image may not Minecraft skin!');
+                return;
+            }
+            if (naturalHeight === 64 && naturalWidth === 64) {
+                canvas.setAttribute('width', '8'); canvas.setAttribute('height', '8');
+                ctx.clearRect(0, 0, 8, 8);
+                ctx.drawImage(img, 8, 8, 8, 8, 0, 0, 8, 8);
+                ctx.drawImage(img, 40, 8, 8, 8, 0, 0, 8, 8);
+            } else {
+                canvas.setAttribute('width', '16'); canvas.setAttribute('height', '16');
+                ctx.clearRect(0, 0, 16, 16);
+                ctx.drawImage(img, 16, 16, 16, 16, 0, 0, 16, 16);
+                ctx.drawImage(img, 80, 16, 16, 16, 0, 0, 16, 16);
+            }
         }
 
         canvas.toBlob(async (i) => {
@@ -74,29 +77,33 @@ document.getElementById('download').onclick = async () => {
             manifest.header.name = totemData.packName;
             manifest.header.uuid = generateUUID();
             manifest = JSON.stringify(manifest, null, 4);
-
-            const renderController = await (await fetch('./source/packs/render_controllers/totem.render_controllers.json')).text(),
-                totem = await (await fetch('./source/packs/attachables/totem.json')).text(),
-                totemFirstPerson = await (await fetch('./source/packs/animations/totem_firstperson.json')).text(),
-                totemAnims = await (await fetch('./source/packs/animations/totem.json')).text(),
-                totemModelLeft = await (await fetch(`./source/model/${(totemData.isSmallHand) ? 'small' : 'slim'}/totem_left.geo.json`)).text(),
-                totemModelRight = await (await fetch(`./source/model/${(totemData.isSmallHand) ? 'small' : 'slim'}/totem_right.geo.json`)).text();
+            manifest.header.description = `Use your ${(totemData.notFor3DTotem) ? 'image' : 'skin'} to custom totem\nCreate by Asaki Zuki\nThanks for using ;-;`;
 
             const zip = new JSZip();
             zip.file('manifest.json', manifest);
-            zip.file('totem.png', totemData.skin, { base64: true });
-            zip.file('pack_icon.png', i, { base64: true });
-            const animations = zip.folder('animations');
-            animations.file('totem_firstperson.json', totemFirstPerson);
-            animations.file('totem.json', totemAnims);
-            zip.folder('attachables').file('totem.json', totem);
-            zip.folder('render_controllers').file('totem.render_controllers.json', renderController);
-            const model = zip.folder('models').folder('entity');
-            model.file('totem_left.geo.json', totemModelLeft);
-            model.file('totem_right.geo.json', totemModelRight);
+
+            if (!totemData.notFor3DTotem) {
+                const renderController = await (await fetch('./source/packs/render_controllers/totem.render_controllers.json')).text(),
+                    totem = await (await fetch('./source/packs/attachables/totem.json')).text(),
+                    totemFirstPerson = await (await fetch('./source/packs/animations/totem_firstperson.json')).text(),
+                    totemAnims = await (await fetch('./source/packs/animations/totem.json')).text(),
+                    totemModelLeft = await (await fetch(`./source/model/${(totemData.isSmallHand) ? 'small' : 'slim'}/totem_left.geo.json`)).text(),
+                    totemModelRight = await (await fetch(`./source/model/${(totemData.isSmallHand) ? 'small' : 'slim'}/totem_right.geo.json`)).text();
+                zip.file('pack_icon.png', i, { base64: true });
+                zip.file('totem.png', totemData.skin, { base64: true });
+                const animations = zip.folder('animations');
+                animations.file('totem_firstperson.json', totemFirstPerson);
+                animations.file('totem.json', totemAnims);
+                zip.folder('attachables').file('totem.json', totem);
+                zip.folder('render_controllers').file('totem.render_controllers.json', renderController);
+                const model = zip.folder('models').folder('entity');
+                model.file('totem_left.geo.json', totemModelLeft);
+                model.file('totem_right.geo.json', totemModelRight);
+            } else
+                zip.file('pack_icon.png', totemData.totemTexture);
 
             if (([0, 2].includes(totemData.textureType) || !totemData.totemTexture) && totemData.textureType !== 1)
-                if (totemData.textureType === 2 && totemData.totemTexture)
+                if ((totemData.textureType === 2 || totemData.notFor3DTotem) && totemData.totemTexture)
                     zip.folder('textures').folder('items').file('totem.png', totemData.totemTexture);
                 else
                     zip.folder('textures').folder('items').file('totem.png', i, { base64: true });
@@ -111,7 +118,7 @@ document.getElementById('download').onclick = async () => {
             })
         }, 'image/png', '-moz-parse-options:format=bmp;bpp=128')
     } else {
-        alert('Choose your skin before download!')
+        alert(`Import ${(totemData.notFor3DTotem) ? 'image' : 'skin'} first!`)
     }
 }
 document.getElementById("packName").oninput = (v) => {
@@ -131,3 +138,16 @@ updateTexture = () => {
     document.getElementById('custom_texture').className = (totemData.textureType === 2) ? "active" : "";
     document.getElementById('importTexturePanel').className = (totemData.textureType === 2) ? "btn" : "btn inputDisable";
 };
+
+document.getElementById('notfor3dtotem').onclick = (m) => {
+    totemData.notFor3DTotem = m.srcElement.checked;
+    document.title = `${(totemData.notFor3DTotem) ? '2D' : '3D'} Totem Generator`;
+    document.getElementsByClassName('header')[0].innerText = `${(totemData.notFor3DTotem) ? '2D' : '3D'} Totem Generator`;
+
+    document.getElementsByClassName('importSkin')[0].style.display = (totemData.notFor3DTotem) ? 'none' : '';
+    document.getElementsByClassName('selectedButton')[0].style.display = (totemData.notFor3DTotem) ? 'none' : '';
+    document.getElementsByClassName('totemTextureSelectedButton')[0].style.display = (totemData.notFor3DTotem) ? 'none' : '';
+    document.getElementsByClassName('totemTextureSelectedButton')[1].style.display = (totemData.notFor3DTotem) ? 'none' : '';
+    document.getElementsByClassName('selectedButton')[1].style.height = (totemData.notFor3DTotem) ? '110px' : '';
+    document.getElementById('importTexturePanel').className = (totemData.notFor3DTotem || totemData.textureType === 2) ? 'btn' : 'btn inputDisable';
+}

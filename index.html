@@ -26,20 +26,48 @@
 <body>
     <div class="header">3D Totem Generator</div>
     <div class="content">
-        <div class="description">Create resource packs to use your skin as a totem in Minecraft: Bedrock Edition<br>
+        <div class="description">Creating your own totem resource pack with player skin or picture in Minecraft: Bedrock
+            Edition<br>
             + Creator: <a href="https://www.youtube.com/@main.asakizuki" target="_blank" class="link">Asaki Zuki</a><br>
+            + Translator: <a href="https://www.facebook.com/profile.php?id=100036150383726" target="_blank"
+                class="link">Vũ Phúc</a><br>
             + Source Code: <a href="https://github.com/asakizuki/Custom-Totem-Skin" target="_blank"
                 class="link">Github</a></div>
         <div class="description">
             <div class="title">How to use this tool</div>
-            Very simple to use, you just need to give the skin you want and download it!
+            Very easy to use, just import your most-liked skin and download it!
         </div>
         <div class="description">
-            <div class="title">What is SkinType?</div>
-            Skin Type is the size of the arm in the game, usually Big Hand for Male Skin and Small Hand for Female Skin.
+            <div class="title">What is Skin Type?</div>
+            Skin Type is a feature which changes its arm size. Normally, "Big Hand" is for male skin and "small hand" is
+            for female one.
         </div>
 
-        <div class="importSkin">
+        <div class="no_use_3d_totem">
+            <div class="label">
+                <a class="name">Not for 3D Totem</a><br>
+                <a class="decs">If 3D totem is not your type, you can try this option</a>
+            </div>
+            <input type="checkbox" id="notfor3dtotem">
+            <div class="toggle">
+                <div class="outside">
+                    <div class="btnBG"></div>
+                    <svg width="3" height="15" style="position: absolute; top: 50%; 
+                    transform: translateY(-50%); left: 13.5px;">
+                        <rect width="3" height="15" style="fill:rgb(255,255,255)"></rect>
+                    </svg>
+                    <svg width="17" height="17" style="position: absolute; top: 50%; 
+                    transform: translateY(-50%); right: 6px;">
+                        <line x1="3" y1="0" x2="15" y2="0" style="stroke:rgb(65, 65, 65);stroke-width:6px" />
+                        <line x1="2" y1="3" x2="2" y2="15" style="stroke:rgb(65, 65, 65);stroke-width:3px" />
+                        <line x1="16" y1="3" x2="16" y2="15" style="stroke:rgb(65, 65, 65);stroke-width:4px" />
+                        <line x1="3" y1="16" x2="15" y2="16" style="stroke:rgb(65, 65, 65);stroke-width:4px" />
+                    </svg>
+                    <div class="button"></div>
+                </div>
+            </div>
+        </div>
+        <div class=" importSkin">
             <div class="btn">
                 <input id="selectedSkinImage" type="file" width="48" height="48" accept="image/png" title="">
                 <button>Import Skin</button>
@@ -55,7 +83,7 @@
             </div>
         </div>
         <div class="selectedButton withImportTexture">
-            <a>Totem Texture</a>
+            <a class="totemTextureSelectedButton">Totem Texture</a>
             <div class="totemTextureSelectedButton">
                 <button id="automatic" class="active">Automatic</button>
                 <button id="vanilla_texture">Vanilla</button>
