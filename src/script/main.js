@@ -14,49 +14,55 @@ generateUUID = () => {
 }
 document.getElementById('selectedTextureImage').onchange = (e) => {
     const r = new FileReader(), f = e.srcElement.files[0];
-    totemData.totemTexture = f;
-    r.readAsDataURL(f);
-    document.getElementById('filename2').innerText = f.name;
-    r.addEventListener('load', (g) => {
-        fetch(g.target.result).then(v => v.blob()).then(v => document.getElementsByClassName('previewImage')[1].src = URL.createObjectURL(v));
-    })
+    if (['png', 'jpg', 'jpeg'].includes(f.type.match(/[a-z]+/g)?.[1])) {
+        totemData.totemTexture = f;
+        console.log(f);
+        r.readAsDataURL(f);
+        document.getElementById('filename2').innerText = f.name;
+        r.addEventListener('load', (g) => {
+            fetch(g.target.result).then(v => v.blob()).then(v => document.getElementsByClassName('previewImage')[1].src = URL.createObjectURL(v));
+        });
+    } else alert('Only png, jpg, jpeg can be used!')
 }
 document.getElementById("selectedSkinImage").onchange = (e) => {
     const f = e.srcElement.files[0];
-    const r = new FileReader();
-    r.readAsDataURL(f);
-    r.addEventListener('load', async (g) => {
-        const b = await (await fetch(g.target.result)).blob(),
-            img = document.getElementsByClassName('previewImage')[0]
-        img.src = URL.createObjectURL(b);
+    if (['png', 'jpg', 'jpeg'].includes(f.type.match(/[a-z]+/g)?.[1])) {
+        const r = new FileReader();
+        r.readAsDataURL(f);
+        r.addEventListener('load', async (g) => {
+            const b = await (await fetch(g.target.result)).blob(),
+                img = document.getElementsByClassName('previewImage')[0]
+            img.src = URL.createObjectURL(b);
 
-        await new Promise(res => setTimeout(res, 2));
-        totemData.skin = f;
-        document.getElementById('filename').innerText = f.name;
-    });
+            await new Promise(res => setTimeout(res, 2));
+            totemData.skin = f;
+            document.getElementById('filename').innerText = f.name;
+        });
+    } else alert('Only png, jpg, jpeg can be used!')
 }
-
-$("#setToSmallHand").mouseup(() => {
-    totemData.isSmallHand = true; updateHand();
-})
-$("#setToBigHand").mouseup(() => {
-    totemData.isSmallHand = false; updateHand();
-})
-$("#bedrockVersion").mouseup(() => {
-    totemData.isJava = false; updateMCVersion();
-})
-$("#javaVersion").mouseup(() => {
-    totemData.isJava = true; updateMCVersion();
-})
-$("#automatic").mouseup(() => {
-    totemData.textureType = 0; updateTexture();
-})
-$("#vanilla_texture").mouseup(() => {
-    totemData.textureType = 1; updateTexture();
-})
-$("#custom_texture").mouseup(() => {
-    totemData.textureType = 2; updateTexture();
-})
+{
+    $("#setToSmallHand").mouseup(() => {
+        totemData.isSmallHand = true; updateHand();
+    })
+    $("#setToBigHand").mouseup(() => {
+        totemData.isSmallHand = false; updateHand();
+    })
+    $("#bedrockVersion").mouseup(() => {
+        totemData.isJava = false; updateMCVersion();
+    })
+    $("#javaVersion").mouseup(() => {
+        totemData.isJava = true; updateMCVersion();
+    })
+    $("#automatic").mouseup(() => {
+        totemData.textureType = 0; updateTexture();
+    })
+    $("#vanilla_texture").mouseup(() => {
+        totemData.textureType = 1; updateTexture();
+    })
+    $("#custom_texture").mouseup(() => {
+        totemData.textureType = 2; updateTexture();
+    })
+}
 document.getElementById('download').onclick = async () => {
     const canvas = document.getElementById('imagePreview'), ctx = canvas.getContext('2d'), img = document.getElementsByClassName('previewImage')[0];
     const { naturalHeight, naturalWidth } = img;
