@@ -76,8 +76,8 @@ document.getElementById('download').onclick = async () => {
             let manifest = await (await fetch('./source/packs/manifest.json')).json();
             manifest.header.name = totemData.packName;
             manifest.header.uuid = generateUUID();
-            manifest = JSON.stringify(manifest, null, 4);
             manifest.header.description = `Use your ${(totemData.notFor3DTotem) ? 'image' : 'skin'} to custom totem\nCreate by Asaki Zuki\nThanks for using ;-;`;
+            manifest = JSON.stringify(manifest, null, 4);
 
             const zip = new JSZip();
             zip.file('manifest.json', manifest);
