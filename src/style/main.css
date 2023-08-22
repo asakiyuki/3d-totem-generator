@@ -3,6 +3,10 @@ div {
     position: relative;
 }
 
+* {
+    user-select: none;
+}
+
 div.inputDisable div.filename {
     user-select: none
 }
@@ -97,17 +101,14 @@ div.withImportTexture {
 }
 
 div.skinTypeSelectedButton {
-    position: relative;
+    width: 100%;
+    position: absolute;
     margin-bottom: 4px
 }
 
 div.withImportTexture div.importSkin {
     margin-top: 7px;
     border-bottom: none
-}
-
-div.skinTypeSelectedButton:active {
-    top: 1px
 }
 
 button {
@@ -140,6 +141,7 @@ div.selectedButton div.totemTextureSelectedButton button {
 }
 
 button.active {
+    cursor: default;
     top: 3px;
     color: #fff;
     height: 30px;
@@ -376,4 +378,8 @@ div.no_use_3d_totem div.outside div.btnBG {
     width: 0px;
     top: 0px;
     border-left: 30px solid rgb(0, 157, 0);
+}
+
+input#packname {
+    cursor: text;
 }
