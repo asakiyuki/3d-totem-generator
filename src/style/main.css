@@ -5,6 +5,7 @@ div {
 
 * {
     user-select: none;
+    overflow: hidden;
 }
 
 div.inputDisable div.filename {
@@ -107,11 +108,13 @@ div.skinTypeSelectedButton {
 }
 
 div.withImportTexture div.importSkin {
-    margin-top: 7px;
+    margin-top: 0px;
     border-bottom: none
 }
 
 button {
+    top: 0px;
+    transition: 0.2s cubic-bezier(0.61, 1, 0.88, 1);
     height: 35px;
     padding-left: 15px;
     padding-right: 15px;
@@ -142,13 +145,14 @@ div.selectedButton div.totemTextureSelectedButton button {
 
 button.active {
     cursor: default;
-    top: 3px;
     color: #fff;
+    top: 3px;
     height: 30px;
     border-image-slice: 1;
     border-image-source: linear-gradient(to left, #11bf01, #11bf01 40%, #FFF 40%, #FFF 60%, #11bf01 60%, #11bf01 100%);
     border-bottom: 2px solid #fff;
-    background-color: #11bf01
+    background-color: #11bf01;
+    margin-top: 3px;
 }
 
 div.importSkin {
