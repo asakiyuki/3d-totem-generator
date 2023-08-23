@@ -113,7 +113,6 @@ div.withImportTexture div.importSkin {
 
 button {
     top: 0px;
-    transition: 0.2s cubic-bezier(0.61, 1, 0.88, 1);
     height: 35px;
     padding-left: 15px;
     padding-right: 15px;
