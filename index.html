@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Totem Generator</title>
-
     <link rel="stylesheet" href="./src/style/main.css">
     <link rel="icon" type="image/x-icon" href="./src/texture/icon.jpg">
     <style>
@@ -18,7 +17,6 @@
             src: url('./src/font/minecraft-ten.ttf');
         }
     </style>
-
     <script src="./libarries/jszip.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 </head>
@@ -26,37 +24,49 @@
 <body>
     <div class="header">3D Totem Generator</div>
     <div class="content">
-        <div class="description">Creating your own totem resource pack with player skin or picture in Minecraft<br>
-            + Creator: <a href="https://www.youtube.com/@main.asakizuki" target="_blank" class="link">Asaki Zuki</a><br>
-            + Translator: <a href="https://www.facebook.com/profile.php?id=100036150383726" target="_blank"
-                class="link">Vũ Phúc</a><br>
-            + Source Code: <a href="https://github.com/asakizuki/Custom-Totem-Skin" target="_blank"
-                class="link">Github</a></div>
+        <div class="description">Creating your own totem resource pack with player skin or picture in Minecraft<br>+
+            Creator: <a href="https://www.youtube.com/@main.asakizuki" target="_blank" class="link">Asaki Zuki</a><br>+
+            Translator: <a href="https://www.facebook.com/profile.php?id=100036150383726" target="_blank"
+                class="link">Vũ Phúc</a><br>+ Source Code: <a href="https://github.com/asakizuki/Custom-Totem-Skin"
+                target="_blank" class="link">Github</a></div>
         <div class="description">
-            <div class="title">How to use this tool</div>
-            Very easy to use, just import your most-liked skin and download it!
+            <div class="title">How to use this tool</div>Very easy to use, just import your most-liked skin and download
+            it!
         </div>
         <div class="description">
-            <div class="title">What is Skin Type?</div>
-            Skin Type is a feature which changes its arm size. Normally, "Big Hand" is for male skin and "small hand" is
-            for female one.
+            <div class="title">What is Skin Type?</div>Skin Type is a feature which changes its arm size. Normally, "Big
+            Hand" is for male skin and "small hand" is for female one.
         </div>
-
         <div class="no_use_3d_totem">
-            <div class="label">
-                <a class="name">Not for 3D Totem</a><br>
-                <a class="decs">If 3D totem is not your type, you can try this option</a>
-            </div>
-            <input type="checkbox" id="notfor3dtotem">
+            <div class="label"> <a class="name">Not for 3D Totem</a><br><a class="decs">If 3D totem is not your type,
+                    you can try this option</a> </div><input type="checkbox" id="notfor3dtotem">
             <div class="toggle">
                 <div class="outside">
-                    <div class="btnBG"></div>
-                    <svg width="3" height="15" style="position: absolute; top: 50%; 
-                    transform: translateY(-50%); left: 13.5px;">
+                    <div class="btnBG"></div><svg width="3" height="15"
+                        style="position: absolute; top: 50%; transform: translateY(-50%); left: 13.5px;">
                         <rect width="3" height="15" style="fill:rgb(255,255,255)"></rect>
+                    </svg> <svg width="17" height="17"
+                        style="position: absolute; top: 50%; transform: translateY(-50%); right: 6px;">
+                        <line x1="3" y1="0" x2="15" y2="0" style="stroke:rgb(65, 65, 65);stroke-width:6px" />
+                        <line x1="2" y1="3" x2="2" y2="15" style="stroke:rgb(65, 65, 65);stroke-width:3px" />
+                        <line x1="16" y1="3" x2="16" y2="15" style="stroke:rgb(65, 65, 65);stroke-width:4px" />
+                        <line x1="3" y1="16" x2="15" y2="16" style="stroke:rgb(65, 65, 65);stroke-width:4px" />
                     </svg>
-                    <svg width="17" height="17" style="position: absolute; top: 50%; 
-                    transform: translateY(-50%); right: 6px;">
+                    <div class="button"></div>
+                </div>
+            </div>
+        </div>
+        <div style="margin-bottom: 10px;" class="no_use_3d_totem">
+            <div class="label"> <a class="name">Player Name</a><br><a class="decs">Using other Minecraft: Java Edition
+                    player's skin to create totem
+                </a> </div><input type="checkbox" id="usePlayerName">
+            <div class="toggle">
+                <div class="outside">
+                    <div class="btnBG"></div><svg width="3" height="15"
+                        style="position: absolute; top: 50%; transform: translateY(-50%); left: 13.5px;">
+                        <rect width="3" height="15" style="fill:rgb(255,255,255)"></rect>
+                    </svg> <svg width="17" height="17"
+                        style="position: absolute; top: 50%; transform: translateY(-50%); right: 6px;">
                         <line x1="3" y1="0" x2="15" y2="0" style="stroke:rgb(65, 65, 65);stroke-width:6px" />
                         <line x1="2" y1="3" x2="2" y2="15" style="stroke:rgb(65, 65, 65);stroke-width:3px" />
                         <line x1="16" y1="3" x2="16" y2="15" style="stroke:rgb(65, 65, 65);stroke-width:4px" />
@@ -67,49 +77,36 @@
             </div>
         </div>
         <div class="importSkin">
-            <div class="btn">
-                <input id="selectedSkinImage" type="file" width="48" height="48" accept="image/png" title="">
-                <button>Import Skin</button>
+            <div class="btn" id="importSkinElement"> <input id="selectedSkinImage" type="file" width="48" height="48"
+                    accept="image/png" title=""> <button>Import Skin</button>
                 <div class="filename"><a id="filename">No file chosen</a></div>
             </div>
-            <img draggable="false" class="previewImage">
+            <div class="btn" id="inputText" style="display: none;"> <input style="top: 11px;" class="textInput"
+                    id="playerName" placeholder="Player Name &#60;Example: AsakiZukiYT&#62;"> <button id="getSkin"
+                    style="position: absolute; width: calc(100% - 12px); bottom: 0px; margin-top: 59px;">Get
+                    Skin</button> </div><img draggable="false" class="previewImage">
         </div>
-        <div class="selectedButton">
-            <a>Skin Type</a>
-            <div class="skinTypeSelectedButton">
-                <button id="setToBigHand" class="active">Big Hand</button>
-                <button id="setToSmallHand">Small Hand</button>
-            </div>
+        <div class="selectedButton"> <a>Skin Type</a>
+            <div class="skinTypeSelectedButton"> <button id="setToBigHand" class="active">Big Hand</button> <button
+                    id="setToSmallHand">Small Hand</button> </div>
         </div>
-        <div class="selectedButton withImportTexture">
-            <a class="totemTextureSelectedButton">Totem Texture</a>
-            <div class="totemTextureSelectedButton">
-                <button id="automatic" class="active">Automatic</button>
-                <button id="vanilla_texture">Vanilla</button>
-                <button id="custom_texture">Custom</button>
-            </div>
+        <div class="selectedButton withImportTexture"> <a class="totemTextureSelectedButton">Totem Texture</a>
+            <div class="totemTextureSelectedButton"> <button id="automatic" class="active">Automatic</button> <button
+                    id="vanilla_texture">Vanilla</button> <button id="custom_texture">Custom</button> </div>
             <div class="importSkin">
-                <div id="importTexturePanel" class="btn inputDisable">
-                    <input id="selectedTextureImage" type="file" width="48" height="48" accept="image/*" title="">
-                    <button>Import Texture</button>
+                <div id="importTexturePanel" class="btn inputDisable"> <input id="selectedTextureImage" type="file"
+                        width="48" height="48" accept="image/*" title=""> <button>Import Texture</button>
                     <div class="filename"><a id="filename2">No file chosen</a></div>
-                </div>
-                <img draggable="false" class="previewImage">
+                </div><img draggable="false" class="previewImage">
             </div>
         </div>
-        <div class="selectedButton">
-            <a>Minecraft Version</a>
-            <div class="skinTypeSelectedButton">
-                <button id="bedrockVersion" class="active">Bedrock</button>
-                <button id="javaVersion">Java</button>
-            </div>
+        <div class="selectedButton"> <a>Minecraft Version</a>
+            <div class="skinTypeSelectedButton"> <button id="bedrockVersion" class="active">Bedrock</button> <button
+                    id="javaVersion">Java</button> </div>
         </div>
-        <div class="downloadButton">
-            <button id="download">Download</button>
-            <input id="packName" placeholder="Pack name...">
-        </div>
-
-        <canvas style="width: 0px; height: 0px;" width="8" height="8" id="imagePreview"></canvas>
+        <div class="downloadButton"> <button id="download">Download</button> <input id="packName"
+                placeholder="Pack name..."> </div><canvas style="width: 0px; height: 0px;" width="8" height="8"
+            id="imagePreview"></canvas>
     </div>
     <script src="./src/script/main.js"></script>
 </body>

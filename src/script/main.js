@@ -5,8 +5,12 @@ const totemData = {
     totemTexture: undefined,
     notFor3DTotem: false,
     isJava: false,
-    skin: undefined
+    skin: undefined,
+    isPlayerName: false,
+    lastSearch: '',
+    isWait: false
 };
+const _ = document;
 {
     clickSound = (soundFile) => {
         try {
@@ -19,34 +23,34 @@ const totemData = {
             .replaceAll(/\$/g,
                 () => Math.floor(Math.random() * 16).toString(16));
     }
-    document.getElementById('selectedTextureImage').onchange = (e) => {
-        const r = new FileReader(), f = e.srcElement.files[0];
+    _.getElementById('selectedTextureImage').onchange = (e) => {
+        const r = new FileReader(), f = e.target.files[0];
         if (['png', 'jpg', 'jpeg'].includes(f.type.match(/[a-z]+/g)?.[1])) {
             totemData.totemTexture = f;
             console.log(f);
             r.readAsDataURL(f);
-            document.getElementById('filename2').innerText = f.name;
+            _.getElementById('filename2').innerText = f.name;
             r.addEventListener('load', (g) => {
-                fetch(g.target.result).then(v => v.blob()).then(v => document.getElementsByClassName('previewImage')[1].src = URL.createObjectURL(v));
+                fetch(g.target.result).then(v => v.blob()).then(v => _.getElementsByClassName('previewImage')[1].src = URL.createObjectURL(v));
             });
         } else {
             alert('Only png, jpg, jpeg can be used!')
             clickSound('snes_pop.ogg');
         }
     }
-    document.getElementById("selectedSkinImage").onchange = (e) => {
-        const f = e.srcElement.files[0];
+    _.getElementById("selectedSkinImage").onchange = (e) => {
+        const f = e.target.files[0];
         if (f.type.match(/[a-z]+/g)?.[1] === 'png') {
             const r = new FileReader();
             r.readAsDataURL(f);
             r.addEventListener('load', async (g) => {
                 const b = await (await fetch(g.target.result)).blob(),
-                    img = document.getElementsByClassName('previewImage')[0]
+                    img = _.getElementsByClassName('previewImage')[0]
                 img.src = URL.createObjectURL(b);
 
                 await new Promise(res => setTimeout(res, 2));
                 totemData.skin = f;
-                document.getElementById('filename').innerText = f.name;
+                _.getElementById('filename').innerText = f.name;
             });
         } else {
             alert('Only png can be used!')
@@ -90,10 +94,70 @@ const totemData = {
             updateTexture();
         })
     }
-    document.getElementById('download').onclick = async () => {
+
+    getSkinByPlayerName = async () => {
+        try {
+            await new Promise(r => setTimeout(r, 100));
+            totemData.isWait = true;
+            const p = _.getElementById('playerName').value;
+            if (p.replaceAll(' ', '').length !== 0) {
+                if (!(p.length >= 3 && p.length <= 16) || p.replaceAll(/([A-Za-z0-9]|_)+/g, '').length !== 0) {
+                    alert('Character limited (3-16)!\nYou can fill with A-Z letter, numbers, and underscore \'_\'!')
+                    totemData.isWait = false;
+                    clickSound('snes_pop.ogg');
+                }
+                else {
+                    if (totemData.lastSearch !== p) {
+                        totemData.lastSearch = p;
+                        const getByPlayerName = JSON.parse((await (await fetch(`https://api.allorigins.win/get?url=https://api.mojang.com/users/profiles/minecraft/${p}`)).json()).contents);
+                        if (getByPlayerName.id) {
+                            const getPlayer = JSON.parse(atob(JSON.parse((await (await fetch(`https://api.allorigins.win/get?url=https://sessionserver.mojang.com/session/minecraft/profile/${getByPlayerName.id}`)).json()).contents).properties[0].value)).textures.SKIN;
+                            await fetch(getPlayer.url).then(k => k.blob()).then(k => {
+                                totemData.skin = k;
+                                totemData.isSmallHand = getPlayer?.metadata?.model === 'slim';
+                                updateHand();
+                                _.getElementsByClassName('previewImage')[0].src = URL.createObjectURL(k);
+                            });
+                            totemData.isWait = false;
+                        } else {
+                            totemData.isWait = false;
+                            alert(`Player ${p} does not exist!`)
+                            clickSound('snes_pop.ogg');
+                        }
+                    } else
+                        totemData.isWait = false;
+                }
+            } else {
+                totemData.isWait = false;
+                alert(`You haven't fill with player's name!`)
+                clickSound('snes_pop.ogg');
+            }
+        } catch (e) {
+            alert(`Error: ${e}\n${e.stack}`);
+            clickSound('snes_pop.ogg');
+        }
+    }
+    _.getElementById('getSkin').onclick = (e) => {
         clickSound('release.ogg');
+        getSkinByPlayerName()
+    }
+
+    _.getElementById('playerName').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey) getSkinByPlayerName();
+    })
+
+    _.getElementById('usePlayerName').onclick = async (e) => {
+        clickSound('release.ogg');
+        totemData.isPlayerName = e.target.checked;
+        _.getElementById('importSkinElement').style.display = (e.target.checked) ? 'none' : '';
+        _.getElementById('inputText').style.display = (e.target.checked) ? '' : 'none';
+    }
+
+    _.getElementById('download').onclick = async () => {
+        clickSound('release.ogg');
+        if (totemData.isWait) { alert('Wait me!'); return }
         await new Promise(r => setTimeout(r, 100));
-        const canvas = document.getElementById('imagePreview'), ctx = canvas.getContext('2d'), img = document.getElementsByClassName('previewImage')[0];
+        const canvas = _.getElementById('imagePreview'), ctx = canvas.getContext('2d'), img = _.getElementsByClassName('previewImage')[0];
         const { naturalHeight, naturalWidth } = img;
         if ((totemData.skin && !totemData.notFor3DTotem) || (totemData.totemTexture && totemData.notFor3DTotem)) {
             if (!totemData.notFor3DTotem) {
@@ -117,7 +181,10 @@ const totemData = {
 
             canvas.toBlob(async (i) => {
                 if (totemData.isJava) {
-                    const manifest = await (await fetch('./javaSrc/packs/pack.mcmeta')).text();
+                    let manifest = await (await fetch('./javaSrc/packs/pack.mcmeta')).json();
+                    manifest.pack.description = `Use your ${(totemData.notFor3DTotem) ? 'image' : 'skin'} to custom totem. Create by Asaki Zuki. Thanks for using ;-;`;
+                    manifest = JSON.stringify(manifest, null, 4);
+
                     const zip = new JSZip();
                     zip.file('pack.mcmeta', manifest);
                     const mc = zip.folder('assets').folder('minecraft');
@@ -125,17 +192,17 @@ const totemData = {
                     zip.file('pack.png', (totemData.notFor3DTotem) ? totemData.totemTexture : i);
 
                     if (!totemData.notFor3DTotem) {
-                        const model = await (await fetch(`./javaSrc/model/${(totemData.isSmallHand) ? 'small' : 'slim'}/totem_of_undying.json`)).text();
+                        const model = await (await fetch(`./javaSrc/model/${(totemData.isSmallHand) ? 'slim' : 'default'}/totem_of_undying.json`)).text();
                         mc.folder('models').folder('item').file('totem_of_undying.json', model);
                     }
 
                     zip.generateAsync({ type: "blob" }).then(c => {
-                        const a = document.createElement('a');
+                        const a = _.createElement('a');
                         a.setAttribute('href', URL.createObjectURL(c));
                         a.setAttribute('download', `${totemData.packName}.zip`);
-                        document.body.appendChild(a);
+                        _.body.appendChild(a);
                         a.click();
-                        document.body.removeChild(a);
+                        _.body.removeChild(a);
                     })
                 }
                 else {
@@ -153,8 +220,8 @@ const totemData = {
                             totem = await (await fetch('./bedrockSrc/packs/attachables/totem.json')).text(),
                             totemFirstPerson = await (await fetch('./bedrockSrc/packs/animations/totem_firstperson.json')).text(),
                             totemAnims = await (await fetch('./bedrockSrc/packs/animations/totem.json')).text(),
-                            totemModelLeft = await (await fetch(`./bedrockSrc/model/${(totemData.isSmallHand) ? 'small' : 'slim'}/totem_left.geo.json`)).text(),
-                            totemModelRight = await (await fetch(`./bedrockSrc/model/${(totemData.isSmallHand) ? 'small' : 'slim'}/totem_right.geo.json`)).text();
+                            totemModelLeft = await (await fetch(`./bedrockSrc/model/${(totemData.isSmallHand) ? 'slim' : 'default'}/totem_left.geo.json`)).text(),
+                            totemModelRight = await (await fetch(`./bedrockSrc/model/${(totemData.isSmallHand) ? 'slim' : 'default'}/totem_right.geo.json`)).text();
                         zip.file('pack_icon.png', i, { base64: true });
                         zip.file('totem.png', totemData.skin, { base64: true });
                         const animations = zip.folder('animations');
@@ -175,12 +242,12 @@ const totemData = {
                             zip.folder('textures').folder('items').file('totem.png', i, { base64: true });
 
                     zip.generateAsync({ type: "blob" }).then(c => {
-                        const a = document.createElement('a');
+                        const a = _.createElement('a');
                         a.setAttribute('href', URL.createObjectURL(c));
                         a.setAttribute('download', `${totemData.packName}.mcpack`);
-                        document.body.appendChild(a);
+                        _.body.appendChild(a);
                         a.click();
-                        document.body.removeChild(a);
+                        _.body.removeChild(a);
                     })
                 }
             }, 'image/png', '-moz-parse-options:format=bmp;bpp=128')
@@ -189,48 +256,49 @@ const totemData = {
             clickSound('snes_pop.ogg');
         }
     }
-    document.getElementById("packName").oninput = (v) => {
-        totemData.packName = (v.srcElement.value === '') ? 'Custom Totem Skin' : v.srcElement.value;
+    _.getElementById("packName").oninput = (v) => {
+        totemData.packName = (v.target.value === '') ? 'Custom Totem Skin' : v.target.value;
     }
-    document.getElementById("packName").addEventListener('keypress', e => {
-        if (e.key === 'Enter' && !e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey) document.getElementById('download').click();
+    _.getElementById("packName").addEventListener('keypress', e => {
+        if (e.key === 'Enter' && !e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey) _.getElementById('download').click();
     })
     updateHand = () => {
-        document.getElementById('setToBigHand').className = (totemData.isSmallHand) ? "" : "active";
-        document.getElementById('setToSmallHand').className = (totemData.isSmallHand) ? "active" : "";
+        _.getElementById('setToBigHand').className = (totemData.isSmallHand) ? "" : "active";
+        _.getElementById('setToSmallHand').className = (totemData.isSmallHand) ? "active" : "";
     }
     updateMCVersion = () => {
-        document.getElementById('bedrockVersion').className = (totemData.isJava) ? "" : "active";
-        document.getElementById('javaVersion').className = (totemData.isJava) ? "active" : "";
-        document.getElementsByClassName('importSkin')[1].style.top = (totemData.isJava) ? '0px' : '8px'
-        document.getElementsByClassName('selectedButton withImportTexture')[0].style.display = (!totemData.isJava || totemData.notFor3DTotem) ? '' : 'none';
+        _.getElementById('bedrockVersion').className = (totemData.isJava) ? "" : "active";
+        _.getElementById('javaVersion').className = (totemData.isJava) ? "active" : "";
+        _.getElementsByClassName('importSkin')[1].style.top = (totemData.isJava || totemData.notFor3DTotem) ? '0px' : '8px'
+        _.getElementsByClassName('selectedButton withImportTexture')[0].style.display = (!totemData.isJava || totemData.notFor3DTotem) ? '' : 'none';
     }
     updateTexture = () => {
-        document.getElementById('automatic').className = (totemData.textureType === 0) ? "active" : "";
-        document.getElementById('vanilla_texture').className = (totemData.textureType === 1) ? "active" : "";
-        document.getElementById('custom_texture').className = (totemData.textureType === 2) ? "active" : "";
-        document.getElementById('importTexturePanel').className = (totemData.textureType === 2) ? "btn" : "btn inputDisable";
+        _.getElementById('automatic').className = (totemData.textureType === 0) ? "active" : "";
+        _.getElementById('vanilla_texture').className = (totemData.textureType === 1) ? "active" : "";
+        _.getElementById('custom_texture').className = (totemData.textureType === 2) ? "active" : "";
+        _.getElementById('importTexturePanel').className = (totemData.textureType === 2) ? "btn" : "btn inputDisable";
     };
-
-    document.getElementById('notfor3dtotem').onclick = (m) => {
+    _.getElementById('notfor3dtotem').onclick = (m) => {
         clickSound('release.ogg');
-        totemData.notFor3DTotem = m.srcElement.checked;
-        document.title = `${(totemData.notFor3DTotem) ? '2D' : '3D'} Totem Generator`;
-        document.getElementsByClassName('header')[0].innerText = `${(totemData.notFor3DTotem) ? '2D' : '3D'} Totem Generator`;
+        totemData.notFor3DTotem = m.target.checked;
+        _.title = `${(totemData.notFor3DTotem) ? '2D' : '3D'} Totem Generator`;
+        _.getElementsByClassName('header')[0].innerText = `${(totemData.notFor3DTotem) ? '2D' : '3D'} Totem Generator`;
 
-        document.getElementsByClassName('importSkin')[0].style.display = (totemData.notFor3DTotem) ? 'none' : '';
-        document.getElementsByClassName('selectedButton')[0].style.display = (totemData.notFor3DTotem) ? 'none' : '';
-        document.getElementsByClassName('totemTextureSelectedButton')[0].style.display = (totemData.notFor3DTotem) ? 'none' : '';
-        document.getElementsByClassName('totemTextureSelectedButton')[1].style.display = (totemData.notFor3DTotem) ? 'none' : '';
-        document.getElementsByClassName('selectedButton')[1].style.height = (totemData.notFor3DTotem) ? '112px' : '';
-        document.getElementById('importTexturePanel').className = (totemData.notFor3DTotem || totemData.textureType === 2) ? 'btn' : 'btn inputDisable';
+        _.getElementsByClassName('importSkin')[0].style.display = (totemData.notFor3DTotem) ? 'none' : '';
+        _.getElementsByClassName('selectedButton')[0].style.display = (totemData.notFor3DTotem) ? 'none' : '';
+        _.getElementsByClassName('totemTextureSelectedButton')[0].style.display = (totemData.notFor3DTotem) ? 'none' : '';
+        _.getElementsByClassName('totemTextureSelectedButton')[1].style.display = (totemData.notFor3DTotem) ? 'none' : '';
+        _.getElementsByClassName('selectedButton')[1].style.height = (totemData.notFor3DTotem) ? '112px' : '';
+        _.getElementById('importTexturePanel').className = (totemData.notFor3DTotem || totemData.textureType === 2) ? 'btn' : 'btn inputDisable';
         updateMCVersion();
-        document.getElementsByClassName('importSkin')[1].style.top = (totemData.isJava || totemData.notFor3DTotem) ? '0px' : '8px'
+        _.getElementsByClassName('no_use_3d_totem')[1].style.display = (totemData.notFor3DTotem) ? 'none' : '';
+        _.getElementsByClassName('no_use_3d_totem')[0].style.marginBottom = (totemData.notFor3DTotem) ? '8px' : '';
+        _.getElementsByClassName('importSkin')[1].style.top = (totemData.isJava || totemData.notFor3DTotem) ? '0px' : '8px'
     }
-    document.getElementsByClassName('importSkin')[1].style.top = '8px';
-    document.getElementsByClassName('link')[0].onclick = () => clickSound('modal_hide.ogg');
-    document.getElementsByClassName('link')[1].onclick = () => clickSound('modal_hide.ogg');
-    document.getElementsByClassName('link')[2].onclick = () => clickSound('modal_hide.ogg');
-    document.getElementById('selectedSkinImage').onclick = () => clickSound('release.ogg');
-    document.getElementById('importTexturePanel').onclick = () => { if (totemData.notFor3DTotem || totemData.textureType === 2) clickSound('release.ogg') };
+    _.getElementsByClassName('importSkin')[1].style.top = '8px';
+    _.getElementsByClassName('link')[0].onclick = () => clickSound('modal_hide.ogg');
+    _.getElementsByClassName('link')[1].onclick = () => clickSound('modal_hide.ogg');
+    _.getElementsByClassName('link')[2].onclick = () => clickSound('modal_hide.ogg');
+    _.getElementById('selectedSkinImage').onclick = () => clickSound('release.ogg');
+    _.getElementById('importTexturePanel').onclick = () => { if (totemData.notFor3DTotem || totemData.textureType === 2) clickSound('release.ogg') };
 }
