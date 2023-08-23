@@ -202,6 +202,7 @@ const totemData = {
     updateMCVersion = () => {
         document.getElementById('bedrockVersion').className = (totemData.isJava) ? "" : "active";
         document.getElementById('javaVersion').className = (totemData.isJava) ? "active" : "";
+        document.getElementsByClassName('importSkin')[1].style.top = (totemData.isJava) ? '0px' : '8px'
         document.getElementsByClassName('selectedButton withImportTexture')[0].style.display = (!totemData.isJava || totemData.notFor3DTotem) ? '' : 'none';
     }
     updateTexture = () => {
@@ -224,7 +225,9 @@ const totemData = {
         document.getElementsByClassName('selectedButton')[1].style.height = (totemData.notFor3DTotem) ? '112px' : '';
         document.getElementById('importTexturePanel').className = (totemData.notFor3DTotem || totemData.textureType === 2) ? 'btn' : 'btn inputDisable';
         updateMCVersion();
+        document.getElementsByClassName('importSkin')[1].style.top = (totemData.isJava || totemData.notFor3DTotem) ? '0px' : '8px'
     }
+    document.getElementsByClassName('importSkin')[1].style.top = '8px';
     document.getElementsByClassName('link')[0].onclick = () => clickSound('modal_hide.ogg');
     document.getElementsByClassName('link')[1].onclick = () => clickSound('modal_hide.ogg');
     document.getElementsByClassName('link')[2].onclick = () => clickSound('modal_hide.ogg');
