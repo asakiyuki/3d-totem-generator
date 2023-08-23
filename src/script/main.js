@@ -112,7 +112,7 @@ const _ = document;
                         const getByPlayerName = JSON.parse((await (await fetch(`https://api.allorigins.win/get?url=https://api.mojang.com/users/profiles/minecraft/${p}`)).json()).contents);
                         if (getByPlayerName.id) {
                             const getPlayer = JSON.parse(atob(JSON.parse((await (await fetch(`https://api.allorigins.win/get?url=https://sessionserver.mojang.com/session/minecraft/profile/${getByPlayerName.id}`)).json()).contents).properties[0].value)).textures.SKIN;
-                            await fetch(getPlayer.url).then(k => k.blob()).then(k => {
+                            await fetch((await (await fetch(`https://api.allorigins.win/get?url=${getPlayer.url}`)).json()).contents).then(k => k.blob()).then(k => {
                                 totemData.skin = k;
                                 totemData.isSmallHand = getPlayer?.metadata?.model === 'slim';
                                 updateHand();
