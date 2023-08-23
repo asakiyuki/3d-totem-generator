@@ -92,7 +92,7 @@ const totemData = {
     }
     document.getElementById('download').onclick = async () => {
         clickSound('release.ogg');
-        await new Promise(r => setTimeout(r, 10));
+        await new Promise(r => setTimeout(r, 100));
         const canvas = document.getElementById('imagePreview'), ctx = canvas.getContext('2d'), img = document.getElementsByClassName('previewImage')[0];
         const { naturalHeight, naturalWidth } = img;
         if ((totemData.skin && !totemData.notFor3DTotem) || (totemData.totemTexture && totemData.notFor3DTotem)) {
@@ -229,5 +229,5 @@ const totemData = {
     document.getElementsByClassName('link')[1].onclick = () => clickSound('modal_hide.ogg');
     document.getElementsByClassName('link')[2].onclick = () => clickSound('modal_hide.ogg');
     document.getElementById('selectedSkinImage').onclick = () => clickSound('release.ogg');
-    document.getElementById('importTexturePanel').onclick = () => clickSound('release.ogg');
+    document.getElementById('importTexturePanel').onclick = () => { if (totemData.notFor3DTotem || totemData.textureType === 2) clickSound('release.ogg') };
 }
