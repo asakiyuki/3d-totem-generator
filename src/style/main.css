@@ -5,7 +5,6 @@ div {
 
 * {
     user-select: none;
-    overflow: hidden;
 }
 
 div.inputDisable div.filename {
