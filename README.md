@@ -1,4 +1,4 @@
-**3D Totem Generator**\n
+**3D Totem Generator**
 
 _Creating your own totem resource pack with player skin or picture in Minecraft_
 + Creator: [Asaki Zuki](https://www.youtube.com/@main.asakizuki)
