@@ -4,7 +4,7 @@
         "description": {
             "identifier": "minecraft:totem_of_undying",
             "materials": {
-                "default": "skeleton"
+                "default": ""
             },
             "textures": {
                 "default": "totem.png"

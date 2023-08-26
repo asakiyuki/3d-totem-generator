@@ -57,7 +57,7 @@
                 </div>
             </div>
         </div>
-        <div style="margin-bottom: 10px;" class="no_use_3d_totem">
+        <div class="no_use_3d_totem">
             <div class="label"> <a class="name">Player Name</a><br><a class="decs">Using other Minecraft: Java Edition
                     player's skin to create totem
                 </a> </div><input type="checkbox" id="usePlayerName">
@@ -77,6 +77,27 @@
                 </div>
             </div>
         </div>
+        <div class="no_use_3d_totem">
+            <div class="label"> <a class="name">Glow Totem</a><br><a class="decs">Create a Totem that can emit its own
+                    light in the darkness
+                </a> </div><input type="checkbox" id="glowTotemToggle">
+            <div class="toggle">
+                <div class="outside">
+                    <div class="btnBG"></div><svg width="3" height="15"
+                        style="position: absolute; top: 50%; transform: translateY(-50%); left: 13.5px;">
+                        <rect width="3" height="15" style="fill:rgb(255,255,255)"></rect>
+                    </svg> <svg width="17" height="17"
+                        style="position: absolute; top: 50%; transform: translateY(-50%); right: 6px;">
+                        <line x1="3" y1="0" x2="15" y2="0" style="stroke:rgb(65, 65, 65);stroke-width:6px" />
+                        <line x1="2" y1="3" x2="2" y2="15" style="stroke:rgb(65, 65, 65);stroke-width:3px" />
+                        <line x1="16" y1="3" x2="16" y2="15" style="stroke:rgb(65, 65, 65);stroke-width:4px" />
+                        <line x1="3" y1="16" x2="15" y2="16" style="stroke:rgb(65, 65, 65);stroke-width:4px" />
+                    </svg>
+                    <div class="button"></div>
+                </div>
+            </div>
+        </div>
+
         <div class="importSkin">
             <div class="btn" id="importSkinElement"> <input id="selectedSkinImage" type="file" width="48" height="48"
                     accept="image/png" title=""> <button>Import Skin</button>
@@ -108,6 +129,7 @@
         <div class="downloadButton"> <button id="download">Download</button> <input id="packName"
                 placeholder="Pack name..."> </div><canvas style="width: 0px; height: 0px;" width="8" height="8"
             id="imagePreview"></canvas>
+        <canvas style="width: 0px; height: 0px;" width="64" height="64" id="reworkTexture"></canvas>
     </div>
     <script src="./src/script/main.js"></script>
 </body>
