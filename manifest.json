@@ -5,11 +5,11 @@
     "icons": [
         {
             "src": "/src/texture/icon.jpg",
-            "sizes": "512x512",
+            "sizes": "704x704",
             "type": "image/jpg"
         }
     ],
-    "start_url": "/index.html",
+    "start_url": "index.html",
     "display": "fullscreen",
     "theme_color": "#000000",
     "background_color": "#000000"
