@@ -1,0 +1,16 @@
+{
+    "name": "3D Totem Generator",
+    "short_name": "Totem Generator",
+    "description": "Creating your own totem resource pack with player skin or picture in Minecraft.",
+    "icons": [
+        {
+            "src": "/src/texture/icon.jpg",
+            "sizes": "512x512",
+            "type": "image/jpg"
+        }
+    ],
+    "start_url": "/index.html",
+    "display": "fullscreen",
+    "theme_color": "#000000",
+    "background_color": "#000000"
+}
