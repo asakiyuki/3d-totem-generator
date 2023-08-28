@@ -42,6 +42,15 @@ input {
 }
 
 body {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, #0003, #000B), url('../texture/background.png');
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
     padding: 0;
     margin: 0;
     background-color: #222
@@ -78,7 +87,7 @@ div.selectedButton {
 }
 
 div.content {
-    outline: #191919 solid 4px;
+    outline: #19191975 solid 4px;
     left: 50%;
     padding: 5px 20px;
     transform: translateX(-50%);
@@ -86,9 +95,9 @@ div.content {
     margin-bottom: 10px;
     width: 1000px;
     max-width: calc(100% - 55px);
-    border-top: 4px solid #4e4d4d;
-    border-bottom: 4px solid #282828;
-    background-color: #3c3c3c
+    border-top: 4px solid #4e4d4d75;
+    border-bottom: 4px solid #28282875;
+    background-color: #0008
 }
 
 div.selectedButton {
@@ -250,7 +259,7 @@ img.previewImage {
     top: 0;
     width: 100px;
     height: 100px;
-    background-color: #333;
+    background-color: #0008;
     border: 1px solid #fff
 }
 
@@ -291,7 +300,7 @@ div.description {
     width: calc(100% - 20px);
     color: #fff;
     padding: 10px;
-    background-color: #000
+    background-color: #0008
 }
 
 div.title {
