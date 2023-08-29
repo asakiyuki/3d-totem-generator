@@ -47,10 +47,6 @@ body {
     top: 0px;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, #0003, #000B), url('../texture/background.png');
-    background-position: center;
-    background-size: cover;
-    background-attachment: fixed;
     padding: 0;
     margin: 0;
     background-color: #222
