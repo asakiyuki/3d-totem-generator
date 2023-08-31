@@ -53,6 +53,7 @@
                     await new Promise(res => setTimeout(res, 2));
                     totemData.skin = f;
                     _.getElementById('filename').innerText = f.name;
+                    // _.getElementById('editableImage').style.display = (totemData.glowTotem && totemData.skin) ? '' : 'none';
                 });
             } else {
                 alert('Only png can be used!')
@@ -119,6 +120,7 @@
                                     totemData.isSmallHand = getPlayer?.metadata?.model === 'slim';
                                     updateHand();
                                     _.getElementsByClassName('previewImage')[0].src = URL.createObjectURL(k);
+                                    // _.getElementById('editableImage').style.display = (totemData.glowTotem && totemData.skin) ? '' : 'none';
                                 });
                                 totemData.isWait = false;
                             } else {
@@ -320,6 +322,7 @@
         _.getElementById('glowTotemToggle').onclick = (e) => {
             clickSound('release.ogg');
             totemData.glowTotem = e.target.checked;
+            // _.getElementById('editableImage').style.display = (e.target.checked && totemData.skin) ? '' : 'none';
         }
 
         _.getElementsByClassName('importSkin')[1].style.top = '8px';
@@ -328,5 +331,26 @@
         _.getElementsByClassName('link')[2].onclick = () => clickSound('modal_hide.ogg');
         _.getElementById('selectedSkinImage').onclick = () => clickSound('release.ogg');
         _.getElementById('importTexturePanel').onclick = () => { if (totemData.notFor3DTotem || totemData.textureType === 2) clickSound('release.ogg') };
+    }
+
+    {
+        let onOverlay = false;
+        _.getElementById('editableImage').onclick = () => {
+            _.body.style.overflow = 'hidden';
+            _.getElementById('skinEditor').style.display = '';
+            onOverlay = true;
+        }
+        exit = () => {
+            if (onOverlay) {
+                _.body.style.overflow = '';
+                _.getElementById('skinEditor').style.display = 'none';
+            }
+        }
+        _.addEventListener('keydown', (e) => {
+            if (e.code === 'Escape') exit();
+        });
+
+        _.getElementById('closeSkinEditor').onclick = exit;
+        _.getElementById('skinEditorOnSave').onclick = exit;
     }
 }

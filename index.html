@@ -26,7 +26,7 @@
     <div class="content">
         <div class="description">Creating your own totem resource pack with player skin or picture in Minecraft<br>+
             Creator: <a href="https://www.youtube.com/@main.asakizuki" target="_blank" class="link">Asaki Zuki</a> (<a
-                href="https://www.facebook.com/asakizuki2007" target=" _blank" class="link">Facebook</a>)<br>+
+                href="https://www.facebook.com/realasakizuki" target=" _blank" class="link">Facebook</a>)<br>+
             Translator: <a href="https://www.facebook.com/profile.php?id=100036150383726" target="_blank"
                 class="link">Vũ Phúc</a><br>+ Source Code: <a href="https://github.com/asakizuki/3d-totem-generator"
                 target="_blank" class="link">Github</a></div>
@@ -107,6 +107,7 @@
                     id="playerName" placeholder="Player Name &#60;Example: AsakiZukiYT&#62;"> <button id="getSkin"
                     style="position: absolute; width: calc(100% - 12px); bottom: 0px; margin-top: 59px;">Get
                     Skin</button> </div><img draggable="false" class="previewImage">
+            <img style="display: none;" id="editableImage" src="./src/texture/pen.png">
         </div>
         <div class="selectedButton"> <a>Skin Type</a>
             <div class="skinTypeSelectedButton"> <button id="setToBigHand" class="active">Big Hand</button> <button
@@ -130,6 +131,18 @@
                 placeholder="Pack name..."> </div><canvas style="width: 0px; height: 0px;" width="8" height="8"
             id="imagePreview"></canvas>
         <canvas style="width: 0px; height: 0px;" width="64" height="64" id="reworkTexture"></canvas>
+    </div>
+
+    <div class="overlay" id="skinEditor" style="display: none;">
+        <div class="skinEditorOverlay">
+            <a
+                style="color: #FFF; font-size: 16px; position: absolute; left: 50%; top: -35px; transform: translateX(-50%); white-space: nowrap;">Glow
+                Skin Editor</a>
+            <button id="closeSkinEditor" class="closeButton"><a>x</a></button>
+            <button id="skinEditorOnSave" class="save">Save and Done</button>
+
+            <a>Dit me luoi vai lon chi lam den day thoi</a>
+        </div>
     </div>
     <script src="./src/script/main.js"></script>
     <script src="./src/script/background.js"></script>

@@ -417,3 +417,86 @@ input.textInput::placeholder {
     opacity: .5;
     font-style: italic
 }
+
+img#editableImage {
+    position: absolute;
+    opacity: 0;
+    transition: 0.25s;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    right: 1px;
+    padding: 25px;
+    top: calc(50% - 5px);
+    background-color: #FFF5;
+    transform: translateY(-50%);
+}
+
+
+img#editableImage:hover {
+    opacity: 1;
+}
+
+img#editableImage:active {
+    background-color: #08f5;
+}
+
+div.overlay {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background-color: #0008;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+}
+
+div.skinEditorOverlay {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background-color: #1d1c1c;
+    border-top: 50px solid #2a2a2a;
+    border-bottom: 50px solid #2a2a2a;
+    outline: 2px solid #151515;
+    padding: 20px;
+    width: calc(100% - 50px);
+    max-width: calc(750px);
+    transform: translateX(-50%)translateY(-50%);
+}
+
+div.skinEditorOverlay button.save {
+    position: absolute;
+    width: calc(100% - 20px);
+    left: 10px;
+    top: calc(100% + 8px);
+}
+
+div.skinEditorOverlay button.save:active {
+    top: calc(100% + 13px);
+}
+
+button.closeButton {
+    width: 40px;
+    height: 40px;
+    padding: none;
+    border: none;
+    outline: none;
+    top: -65px;
+    transform: translateX(calc(-100% + 15px));
+    left: 100%;
+    background-color: #0000;
+}
+
+button.closeButton:hover {
+    background-color: #FFF6;
+}
+
+button.closeButton a {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 25px;
+    color: #FFF;
+    transform: translateX(-50%)translateY(-50%);
+}
