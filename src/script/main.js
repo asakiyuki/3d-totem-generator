@@ -53,7 +53,7 @@
                     await new Promise(res => setTimeout(res, 2));
                     totemData.skin = f;
                     _.getElementById('filename').innerText = f.name;
-                    // _.getElementById('editableImage').style.display = (totemData.glowTotem && totemData.skin) ? '' : 'none';
+                    _.getElementById('editableImage').style.display = (totemData.glowTotem && totemData.skin) ? '' : 'none';
                 });
             } else {
                 alert('Only png can be used!')
@@ -120,7 +120,7 @@
                                     totemData.isSmallHand = getPlayer?.metadata?.model === 'slim';
                                     updateHand();
                                     _.getElementsByClassName('previewImage')[0].src = URL.createObjectURL(k);
-                                    // _.getElementById('editableImage').style.display = (totemData.glowTotem && totemData.skin) ? '' : 'none';
+                                    _.getElementById('editableImage').style.display = (totemData.glowTotem && totemData.skin) ? '' : 'none';
                                 });
                                 totemData.isWait = false;
                             } else {
@@ -322,7 +322,7 @@
         _.getElementById('glowTotemToggle').onclick = (e) => {
             clickSound('release.ogg');
             totemData.glowTotem = e.target.checked;
-            // _.getElementById('editableImage').style.display = (e.target.checked && totemData.skin) ? '' : 'none';
+            _.getElementById('editableImage').style.display = (e.target.checked && totemData.skin) ? '' : 'none';
         }
 
         _.getElementsByClassName('importSkin')[1].style.top = '8px';
