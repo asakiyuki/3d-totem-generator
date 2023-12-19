@@ -314,7 +314,7 @@
             _.getElementsByClassName('selectedButton')[1].style.height = (totemData.notFor3DTotem) ? '112px' : '';
             _.getElementById('importTexturePanel').className = (totemData.notFor3DTotem || totemData.textureType === 2) ? 'btn' : 'btn inputDisable';
             updateMCVersion();
-            _.getElementsByClassName('no_use_3d_totem')[1].style.display = (totemData.notFor3DTotem) ? 'none' : '';
+            // _.getElementsByClassName('no_use_3d_totem')[1].style.display = (totemData.notFor3DTotem) ? 'none' : '';
             _.getElementsByClassName('no_use_3d_totem')[0].style.marginBottom = (totemData.notFor3DTotem) ? '8px' : '';
             _.getElementsByClassName('importSkin')[1].style.top = (totemData.isJava || totemData.notFor3DTotem) ? '0px' : '8px';
             _.getElementsByClassName('no_use_3d_totem')[2].style.display = (totemData.isJava || totemData.notFor3DTotem) ? 'none' : '';
