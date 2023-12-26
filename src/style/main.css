@@ -313,22 +313,22 @@ a.link:hover {
     color: #09f
 }
 
-div.no_use_3d_totem {
+div.toggle_element {
     width: 100%;
     height: 70px;
     border-bottom: 3px solid #282828
 }
 
-div.no_use_3d_totem a.name {
+div.toggle_element a.name {
     color: #FFF
 }
 
-div.no_use_3d_totem a.decs {
+div.toggle_element a.decs {
     font-size: 13px;
     color: #FFF9
 }
 
-div.no_use_3d_totem div.label {
+div.toggle_element div.label {
     position: absolute;
     top: 50%;
     padding: 5px;
@@ -337,17 +337,17 @@ div.no_use_3d_totem div.label {
     border-right: 1px solid #c7c7c7
 }
 
-div.no_use_3d_totem:hover {
+div.toggle_element:hover {
     background-color: #0005
 }
 
-div.no_use_3d_totem input {
+div.toggle_element input {
     position: absolute;
     width: 100%;
     height: 100%
 }
 
-div.no_use_3d_totem div.toggle {
+div.toggle_element div.toggle {
     position: absolute;
     right: 0;
     top: 0;
@@ -355,11 +355,11 @@ div.no_use_3d_totem div.toggle {
     height: 100%
 }
 
-div.no_use_3d_totem input:checked+div.toggle div.button {
+div.toggle_element input:checked+div.toggle div.button {
     left: 50%
 }
 
-div.no_use_3d_totem div.outside {
+div.toggle_element div.outside {
     position: absolute;
     top: 50%;
     left: calc(50% - 3px);
@@ -370,7 +370,7 @@ div.no_use_3d_totem div.outside {
     outline: 2px solid #000
 }
 
-div.no_use_3d_totem div.outside div.button {
+div.toggle_element div.outside div.button {
     height: 30px;
     width: 30px;
     transition: 0.2s cubic-bezier(.34, 1.56, .64, 1);
@@ -382,7 +382,7 @@ div.no_use_3d_totem div.outside div.button {
     bottom: 0
 }
 
-div.no_use_3d_totem div.outside div.btnBG {
+div.toggle_element div.outside div.btnBG {
     position: absolute;
     height: 30px;
     left: 0;
@@ -500,3 +500,40 @@ button.closeButton a {
     color: #FFF;
     transform: translateX(-50%)translateY(-50%);
 }
+
+div.hideImportButton {
+    margin-top: 10px;
+    height: 125px;
+}
+
+div.hideImportButton div.totemTextureSelectedButton {
+    display: none;
+}
+
+div.withImportTexture div.importSkin {
+    top: 7.5px;
+}
+
+div.hideImportButton div.importSkin {
+    top: -2.5px;
+}
+
+/* div.alert {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: #0008;
+    z-index: 100;
+}
+
+div.dialog {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%)translateY(-50%);
+    width: 150px;
+    height: 50px;
+    background-color: #101010;
+} */
