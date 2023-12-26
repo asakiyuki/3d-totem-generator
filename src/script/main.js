@@ -20,7 +20,7 @@
     // Update all element 
     const visible = (elementID, isVisible) => {
         _.getElementById(elementID).style.display = isVisible ? '' : 'none';
-    }
+    };
 
     const updateAllOnClick = () => {
         visible('light_totem_toggle', !(totemData.isJava || totemData.totem2D));
