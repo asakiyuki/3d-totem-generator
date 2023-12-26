@@ -24,6 +24,7 @@
 
     const updateAllOnClick = () => {
         visible('light_totem_toggle', !(totemData.isJava || totemData.totem2D));
+        visible('setTotemTexture', !totemData.isJava || totemData.totem2D);
         visible('totemTextureMode', !(totemData.isJava || totemData.totem2D));
         visible('skinTypeSelected', !(totemData.isJava || totemData.totem2D));
         visible('ipSkinE', !totemData.totem2D);
