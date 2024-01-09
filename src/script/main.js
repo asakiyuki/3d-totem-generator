@@ -178,7 +178,7 @@
                                 return v;
                             })));
                             mczip.folder('render_controllers').file('totem.render_controllers.json', await fetch('./bedrockSrc/packs/render_controllers/totem.render_controllers.json').then(v => v.text()));
-                            const model = mczip.folder('model').folder('entity');
+                            const model = mczip.folder('models').folder('entity');
                             model.file('totem_left.geo.json', await fetch(`./bedrockSrc/model/${(totemData.isSmallHand) ? 'slim' : 'default'}/totem_left.geo.json`).then(v => v.text()));
                             model.file('totem_right.geo.json', await fetch(`./bedrockSrc/model/${(totemData.isSmallHand) ? 'slim' : 'default'}/totem_right.geo.json`).then(v => v.text()));
                         }
