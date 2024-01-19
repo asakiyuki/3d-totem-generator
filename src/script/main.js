@@ -149,7 +149,7 @@
                         }));
 
                         mczip.file('pack.mcmeta', manifest);
-                        const mc = mczip.folder('asses').folder('minecraft');
+                        const mc = mczip.folder('assests').folder('minecraft');
                         mc.folder('textures').folder('item').file('totem_of_undying.png', (totemData.totem2D) ? totemData.totemTexture : totemData.skinTexture);
                         mczip.file('pack.png', (totemData.totem2D) ? totemData.totemTexture : d);
                         if (!totemData.totem2D) mc.folder('models').folder('item').file('totem_of_undying.json',
