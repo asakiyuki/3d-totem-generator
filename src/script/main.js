@@ -374,7 +374,6 @@ new CreateNode(GetElement.id('download')).setEvent({
         if (Object.keys(skinData).length === 0) alert('Please import at least 1 skin to download');
         else {
             const uuid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-            console.log(uuid);
             multiFetch({
                 bedrockSrc: {
                     packs: {

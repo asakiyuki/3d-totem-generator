@@ -1032,8 +1032,6 @@ const DownloadFile = (fileURL, fileName = 'content.txt', isTextFile) => {
     let url = fileURL;
     if (typeof fileURL === 'object') url = URL.createObjectURL(fileURL);
     if (isTextFile) url = `data:text/plain;charset=utf-8,${encodeURIComponent(fileURL)}`
-
-    console.log(url);
     new CreateNode('a')
         .setCSS({ display: 'none' })
         .setProperty({ href: url, download: fileName })
