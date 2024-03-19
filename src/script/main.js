@@ -1,225 +1,463 @@
 "use strict";
+/**
+ * @typedef {import('../../libarries/quickElement')}
+ * @typedef {import('../../libarries/jszip_object')}
+ * @typedef {import('../../libarries/multiFetch')}
+ * @typedef {import('../../libarries/XML')}
+ */
 
 {
-    const totemData = {
-        totem2D: false,
-        lightTotem: false,
-        skinTexture: undefined,
-        textureType: 0,
-        totemTexture: undefined,
-        isSmallHand: false,
-        isJava: false,
-        packName: "Custom Totem Skin"
-    };
+    PageDisplay.setTitle('3D Totem Generator').setIcon('./src/texture/icon.webp').setGraph({ facebook: { title: '3D Totem Generator', type: 'website', description: 'Creating your own totem resource pack with player skin or picture in Minecraft', image: 'https://i.imgur.com/oGv0nbN.jpeg', url: 'https://asakiyuki.github.io/3d-totem-generator/' }, twitter: { card: 'summary_large_image', title: '3D Totem Generator', description: 'Creating your own totem resource pack with player skin or picture in Minecraft', image: 'https://i.imgur.com/oGv0nbN.jpeg', url: 'https://asakiyuki.github.io/3d-totem-generator/' } }).importCSS('./src/style/main.css')
+}
 
-    const _ = document;
-    // Make all button has sound on click
-    [..._.getElementsByClassName('toggle_element'), ..._.querySelectorAll('input[type="file"]')].forEach(e => e.addEventListener('click', () => clickSound('release.ogg')))
-    const generateUUID = () => "$$$$$$$$-$$$$-$$$$-$$$$-$$$$$$$$$$$$".replaceAll(/\$/g, () => Math.floor(Math.random() * 16).toString(16));
+const skinOptions = {
+    isJava: false,
+    packname: 'Pack name...'
+};
+const skinData = {};
 
-    // Update all element 
-    const visible = (elementID, isVisible) => {
-        _.getElementById(elementID).style.display = isVisible ? '' : 'none';
-    };
+new CreateNode(GetElement.id('packName')).setEvent({
+    input: (e) => skinOptions.packname = (e.target.value === '') ? 'Pack name...' : e.target.value
+})
 
-    const updateAllOnClick = () => {
-        visible('light_totem_toggle', !(totemData.isJava || totemData.totem2D));
-        visible('setTotemTexture', !totemData.isJava || totemData.totem2D);
-        visible('totemTextureMode', !(totemData.isJava || totemData.totem2D));
-        visible('skinTypeSelected', !(totemData.isJava || totemData.totem2D));
-        visible('ipSkinE', !totemData.totem2D);
-        _.getElementById('setTotemTexture').className = !(totemData.isJava || totemData.totem2D) ? 'selectedButton withImportTexture' : 'selectedButton withImportTexture hideImportButton';
-        _.getElementById('importTexturePanel').className = (totemData.textureType === 2 || totemData.isJava || totemData.totem2D) ? 'btn' : 'btn inputDisable';
-    }
-
-    //Assets
-    const clickSound = (soundFile) => {
-        try {
-            if (!soundFile) throw `soundFile is underfined!`; new Audio(`./src/sound/${soundFile}`).play();
-        } catch (e) { console.error(e); }
-    }
-
-    const onChange = (elementID, callback) => _.getElementById(elementID).onchange = callback;
-
-    const onClick = (elementID, callback, clicksound = 'release.ogg') => _.getElementById(elementID).onclick = (event) => {
-        callback(event);
-        if (typeof clicksound === 'boolean') {
-            if (clicksound) clickSound('release.ogg')
-        }
-        else clickSound(clicksound)
-    };
-
-    const onImportFile = (elementID, callback, callbackWithURL = () => { }) => {
-        onChange(elementID, ({ target: { files } }) => {
-            const r = new FileReader();
-            r.readAsDataURL(files[0]);
-            r.addEventListener('load', async (g) => {
-                const f = await fetch(g.target.result).then(v => v.blob());
-                callbackWithURL(g.target.result);
-                callback(f, files[0].type.match(/[a-z]+/g)[1]);
-            });
-        })
-    }
-
-    const importImage = (elementID, renderImageID, allowType, callback, onError = () => { }) => {
-        onImportFile(elementID, (bFile, tFile) => {
-            try {
-                if (allowType.includes(tFile)) callback(bFile);
-                else throw "err"
-            } catch (e) {
-                onError(e);
+const skinEditor = Dialog.setup(GetElement.id('skinEditorDialog'),
+0.5,
+(node, data) => {
+    data.onShowDialog = true;
+    skinEditor.onCloseCallback = data;
+    node.getChild('title', (c) => c.setText(`Light Totem Editor - ${data.name}`));
+    node.setAnimate([
+        {
+            css: {
+                opacity: 0,
+                transition: '0.5s'
             }
-        }, (u) => _.getElementById(renderImageID).src = u);
-    }
-
-    const radioToggle = (elementArrayID, callback) => {
-        elementArrayID.forEach(oE => {
-            onClick(oE, (e) => {
-                if (e.target.className !== 'active') {
-                    clickSound('release.ogg');
-                    elementArrayID.forEach(iE => _.getElementById(iE).className = (e.target.id === iE) ? 'active' : '');
-                    callback(elementArrayID.indexOf(e.target.id));
-                    updateAllOnClick();
-                }
-            }, false);
-        })
-    };
-
-    const toggleAction = (elementID, callback) => {
-        onClick(elementID, (e) => {
-            callback(e.target.checked);
-            updateAllOnClick();
-        }, false);
-    };
-
-    const downloadItem = (url, filename) => {
-        const a = _.createElement('a');
-        a.href = url;
-        a.download = filename;
-        _.body.appendChild(a);
-        a.click();
-        _.body.removeChild(a);
-    }
-
-    //File change action
-    importImage('selectedSkinImage', 'skinRenderer', ['png'], (blob) => totemData.skinTexture = blob);
-    importImage('selectedTextureImage', 'totemTextureRenderer', ['png', 'jpg', 'jpeg'], (blob) => totemData.totemTexture = blob);
-
-    // Toggle
-    toggleAction('notfor3dtotem', (e) => totemData.totem2D = e);
-    toggleAction('glowTotemToggle', (e) => totemData.lightTotem = e);
-
-    // Radio Toggle Action
-    radioToggle(['automatic', 'vanilla_texture', 'custom_texture'], (i) => totemData.textureType = i);
-    radioToggle(['setToBigHand', 'setToSmallHand'], (i) => totemData.isSmallHand = i === 1);
-    radioToggle(['bedrockVersion', 'javaVersion'], (i) => totemData.isJava = i === 1);
-
-    // Download Totem
-    const drawPackIcon = (img, ctx, canvas, x) => {
-        const d = 8 * x;
-        canvas.setAttribute('height', d); canvas.setAttribute('width', d);
-        ctx.clearRect(0, 0, d, d);
-        ctx.drawImage(img, d, d, d, d, 0, 0, d, d);
-        ctx.drawImage(img, 40 * x, d, d, d, 0, 0, d, d);
-    }
-
-    onClick('download', async () => {
-        if ((totemData.skinTexture && !totemData.totem2D) || (totemData.totemTexture && totemData.totem2D)) {
-            const canvas = _.getElementById('imagePreview'),
-                canvasTexture = _.getElementById('reworkTexture'),
-                ctx = canvas.getContext('2d'),
-                ctxTexture = canvasTexture.getContext('2d'),
-                img = _.getElementById('skinRenderer'),
-                { naturalHeight: height, naturalWidth: width } = img;
-
-            if ([64, 128].includes((height / width) * height) || totemData.totem2D) {
-                canvasTexture.setAttribute('width', `${width}`);
-                canvasTexture.setAttribute('height', `${height}`);
-                ctxTexture.clearRect(0, 0, width, height);
-                ctxTexture.globalAlpha = (totemData.lightTotem) ? 0.2 : 1;
-                ctxTexture.drawImage(img, 0, 0, width, height, 0, 0, width, height);
-                drawPackIcon(img, ctx, canvas, (width === 64 && height === 64) ? 1 : 2);
-
-                canvas.toBlob(async (d) => {
-                    const mczip = new JSZip();
-                    if (totemData.isJava) {
-                        const manifest = JSON.stringify(await fetch('./javaSrc/packs/pack.mcmeta').then(v => v.json()).then(v => {
-                            v.pack.description = `Use your ${(totemData.totem2D) ? 'image' : 'skin'} to custom totem. Create by Asaki Zuki. Thanks for using ;-;`;
-                            return v;
-                        }));
-
-                        mczip.file('pack.mcmeta', manifest);
-                        const mc = mczip.folder('assests').folder('minecraft');
-                        mc.folder('textures').folder('item').file('totem_of_undying.png', (totemData.totem2D) ? totemData.totemTexture : totemData.skinTexture);
-                        mczip.file('pack.png', (totemData.totem2D) ? totemData.totemTexture : d);
-                        if (!totemData.totem2D) mc.folder('models').folder('item').file('totem_of_undying.json',
-                            await fetch(`./javaSrc/model/${(totemData.isSmallHand) ? 'slim' : 'default'}/totem_of_undying.json`).then(v => v.text()));
-                        mczip.generateAsync({ type: 'blob' }).then(c => {
-                            const i = URL.createObjectURL(c);
-                            downloadItem(i, `${totemData.packName}.zip`);
-                            URL.revokeObjectURL(i);
-                        })
-                    } else {
-                        const manifest = JSON.stringify(await fetch('./bedrockSrc/packs/manifest.json').then(v => v.json()).then(v => {
-                            v.header.name = totemData.packName;
-                            v.header.uuid = generateUUID();
-                            v.header.description = `Use your ${(totemData.notFor3DTotem) ? 'image' : 'skin'} to custom totem\nCreate by Asaki Zuki\nThanks for using ;-;`;
-                            return v;
-                        }));
-
-                        mczip.file('manifest.json', manifest);
-                        if (!totemData.totem2D) {
-                            mczip.file('totem.png', totemData.skinTexture);
-                            const a = mczip.folder('animations');
-                            a.file('totem_firstperson.json', await fetch('./bedrockSrc/packs/animations/totem_firstperson.json').then(v => v.text()));
-                            a.file('totem.json', await fetch('./bedrockSrc/packs/animations/totem.json').then(v => v.text()));
-                            mczip.folder('attachables').file('totem.json', JSON.stringify(await fetch('./bedrockSrc/packs/attachables/totem.json').then(v => v.json()).then(v => {
-                                v['minecraft:attachable'].description.materials.default = (totemData.lightTotem) ? 'blaze_head' : 'skeleton';
-                                return v;
-                            })));
-                            mczip.folder('render_controllers').file('totem.render_controllers.json', await fetch('./bedrockSrc/packs/render_controllers/totem.render_controllers.json').then(v => v.text()));
-                            const model = mczip.folder('models').folder('entity');
-                            model.file('totem_left.geo.json', await fetch(`./bedrockSrc/model/${(totemData.isSmallHand) ? 'slim' : 'default'}/totem_left.geo.json`).then(v => v.text()));
-                            model.file('totem_right.geo.json', await fetch(`./bedrockSrc/model/${(totemData.isSmallHand) ? 'slim' : 'default'}/totem_right.geo.json`).then(v => v.text()));
-                        }
-                        mczip.file('pack_icon.png', d);
-
-                        if (([0, 2].includes(totemData.textureType) || !totemData.textureType) && totemData.textureType !== 1)
-                            if ((totemData.textureType === 2 || totemData.totem2D) && totemData.totemTexture)
-                                mczip.folder('textures').folder('items').file('totem.png', totemData.totemTexture);
-                            else
-                                mczip.folder('textures').folder('items').file('totem.png', d);
-
-                        mczip.generateAsync({ type: "blob" }).then(c => {
-                            const u = URL.createObjectURL(c);
-                            downloadItem(u, `${totemData.packName}.mcpack`);
-                            URL.revokeObjectURL(u);
-                        })
-                    }
-                })
+        },
+        {
+            css: { 
+                opacity: 1
             }
         }
-        else { }
+    ])
+    new CreateNode(GetElement.id('skinEditorDialog')).setAnimate([
+        {
+            css: {
+                top: '60%',
+                transition: '0.5s'
+            }
+        },
+        {
+            css: {
+                top: '50%'
+            }
+        }
+    ]);
+
+    new CreateNode(GetElement.id('editorImage')).setAttribute({
+        src: data.data
     })
 
-    // Packname
+    const renderer = new CreateNode(GetElement.id('rendererElement')).
+        setCSS({
+            height: '100%',
+            transform: 'translateX(-50%)translateY(-50%)'
+        })
+    const pxSelect = GetElement.id('imagePixelSelected');
+    const hoverPixel = new CreateNode(GetElement.id('pixelHover')).setCSS({
+        display: 'none',
+        width: `calc(${(1 / data.skinSize) * 100}% - 2px)`,
+        height: `calc(${(1 / data.skinSize) * 100}% - 2px)`
+    })
+    
+    let zoom = 100,
+        isDragging = false,
+        rendererWidth = 0,
+        rendererHeight = 0,
+        offsetCurrent = {
+            x: 0,
+            y: 0
+        },
+        isDraw = false;
 
-    _.getElementById('packName').oninput = (e) => totemData.packName = (e.target.value === '') ? "Custom Totem Skin" : e.target.value;
+    const drawLight = (x, y, width, height, index, requireDraw = false) => {
+        if (!data.lightPixel[`${index}`] || requireDraw) {
+            data.lightPixel[`${index}`] = 1;
+            new CreateNode('div').setCSS({
+                pointerEvents: 'none',
+                backgroundColor: 'rgba(0, 255, 255, 0.5)',
+                position: 'absolute',
+                width: `${width}%`,
+                height: `${height}%`,
+                left: `${x}%`,
+                top: `${y}%`
+            }).addToNode(pxSelect).setAttribute({ index, name: 'lightPixel' });
+        }
+    }
+    
+    for (const index of Object.keys(data.lightPixel).map(v => Number(v))) {
+        const [x, y] = [index % data.skinSize, Math.floor(index / data.skinSize)],
+            percentSizeX = (x / data.skinSize) * 100,
+            percentSizeY = (y / data.skinSize) * 100;
+        drawLight(percentSizeX, percentSizeY, (1 / data.skinSize) * 100, (1 / data.skinSize) * 100, index, true);
+    };
 
-    // Draw toggle
-    Array.from(_.getElementsByClassName('toggle')).forEach(v => v.innerHTML = `<div class="outside">
-        <div class="btnBG"></div><svg width="3" height="15"
-            style="position: absolute; top: 50%; transform: translateY(-50%); left: 13.5px;">
-            <rect width="3" height="15" style="fill:rgb(255,255,255)"></rect>
-        </svg> <svg width="17" height="17"
-            style="position: absolute; top: 50%; transform: translateY(-50%); right: 6px;">
-            <line x1="3" y1="0" x2="15" y2="0" style="stroke:rgb(65, 65, 65);stroke-width:6px" />
-            <line x1="2" y1="3" x2="2" y2="15" style="stroke:rgb(65, 65, 65);stroke-width:3px" />
-            <line x1="16" y1="3" x2="16" y2="15" style="stroke:rgb(65, 65, 65);stroke-width:4px" />
-            <line x1="3" y1="16" x2="15" y2="16" style="stroke:rgb(65, 65, 65);stroke-width:4px" />
-        </svg>
-        <div class="button"></div>
-    </div>`);
+    new CreateNode(pxSelect).setEvent({
+        mousemove: e => {
+            if (!data.onShowDialog) return;
+            const { width, height } = pxSelect.getBoundingClientRect(),
+                [x, y] = [Math.floor((e.offsetX / width) * data.skinSize), Math.floor((e.offsetY / height) * data.skinSize)],
+                percentSizeX = (x / data.skinSize) * 100,
+                percentSizeY = (y / data.skinSize) * 100;
 
-    updateAllOnClick();
+            hoverPixel.setCSS({
+                display: '',
+                left: `${percentSizeX}%`,
+                top: `${percentSizeY}%`
+            });
+
+            if (isDraw) {
+                drawLight(percentSizeX, percentSizeY, (1 / data.skinSize) * 100, (1 / data.skinSize) * 100, x + y * data.skinSize);
+            }
+        },
+        mousedown: e => {
+            if (!data.onShowDialog) return;
+            if (e.button === 0) {
+                const { width, height } = pxSelect.getBoundingClientRect(),
+                    [x, y] = [Math.floor((e.offsetX / width) * data.skinSize), Math.floor((e.offsetY / height) * data.skinSize)],
+                    percentSizeX = (x / data.skinSize) * 100,
+                    percentSizeY = (y / data.skinSize) * 100;
+
+                drawLight(percentSizeX, percentSizeY, (1 / data.skinSize) * 100, (1 / data.skinSize) * 100, x + y * data.skinSize);
+                isDraw = true
+            };
+        },
+        mouseup: e => {
+            if (!data.onShowDialog) return;
+            if (e.button === 0) isDraw = false;
+        },
+        mouseleave: e => {
+            if (!data.onShowDialog) return;
+            isDraw = false;
+        }
+    })
+    
+    let isFirstTick = false;
+    const editor = new CreateNode(GetElement.id('editor')).setEvent({
+        contextmenu: e => {
+            e.preventDefault();
+        },
+        mousedown: e => {
+            if (!data.onShowDialog) return;
+            if (e.button === 2) {
+                editor.setCSS({
+                    cursor: 'grabbing'
+                });
+                renderer.setCSS({
+                    pointerEvents: 'none'
+                });
+                isDragging = true;
+            };
+            isFirstTick = true;
+        },
+        mouseup: e => {
+            if (!data.onShowDialog) return;
+            if (e.button === 2) {
+                editor.setCSS({
+                    cursor: 'default'
+                });
+                renderer.setCSS({
+                    pointerEvents: 'auto'
+                });
+                isDragging = false;
+            }
+        },
+        mousemove: e => {
+            if (!data.onShowDialog) return;
+            const [deltaX, deltaY] = [ offsetCurrent.x - e.offsetX, offsetCurrent.y - e.offsetY ]
+            offsetCurrent = { x: e.offsetX ?? offsetCurrent.x, y: e.offsetY ?? offsetCurrent.y };
+            if (isDragging && !isFirstTick) {
+                renderer.setCSS({
+                    transform: `translateX(calc(-50% + ${rendererWidth -= deltaX}px))translateY(calc(-50% + ${rendererHeight -= deltaY}px))`
+                })
+            }
+            isFirstTick = false;
+        },
+        mouseleave: () => {
+            if (!data.onShowDialog) return;
+            editor.setCSS({
+                cursor: 'default'
+            });
+            renderer.setCSS({
+                pointerEvents: 'auto'
+            });
+            isDragging = false;
+        },
+        wheel: e => {
+            if (!data.onShowDialog) return;
+            if (e.ctrlKey) {
+                e.preventDefault();
+                hoverPixel.setCSS({
+                    display: 'none'
+                });
+                renderer.setCSS({
+                    height: `${zoom -= (e.deltaY / 10) + ((e.deltaY / 100) * (zoom / 20))}%`
+                });
+            }
+        }
+    });
+
+    node.setEvent({
+        contextmenu: e => e.preventDefault()
+    });
+},
+(node, data) => {
+    node.setAnimate([
+        {
+            css: {
+                opacity: 0
+            }
+        }
+    ])
+    new CreateNode(GetElement.id('skinEditorDialog')).setAnimate([
+        {
+            duration: 500,
+            css: {
+                top: '60%'
+            }
+        }
+    ], () => {
+        skinEditor.hideDialog();
+        Array.from(GetElement.name('lightPixel')).forEach(v => v.remove());
+    });
+    data.onShowDialog = false;
+});
+skinEditor.autoHideDialogOnClose = false;
+
+Array.from(GetElement.class("dropdown-toggle")).forEach(node => {
+    node.onclick = () => {
+        ElementClass.toggle(node.parentNode, 'dropdown-active');
+    }
+})
+
+const updateSkinCounter = () => {
+    const skinAmount = Object.keys(skinData).length;
+    GetElement.id('skinCounter').innerText = (skinAmount === 1) ? `1 skin imported!` : `${skinAmount} skins imported!`
 }
+
+const onFileImported = (data, name, imageData, isSize64) => {
+    const skinID = Array.from({length: 15}, () => Math.floor(Math.random() * 15).toString(15)).join('');
+    let isSmallHand = false;
+
+    for (let i = 0; i < 48 * isSize64; i++) {
+        const isSecond = Math.floor(i / (2 * isSize64)) > (12 * isSize64 - 1),
+            [x, y] = [i % (2 * isSize64), Math.floor(i / (2 * isSize64)) - isSecond * (12 * isSize64)];
+        if (isSmallHand = isSmallHand || (imageData[(((isSecond ? (20 * isSize64) : (52 * isSize64)) + y) * (64 * isSize64) + (isSecond ? (54 * isSize64) : (46 * isSize64)) + x) * 4 + 3] === 0)) break;
+    }
+    skinData[skinID] = {
+        name: name.split('.')[0],
+        data: data,
+        smallHand: isSmallHand,
+        skinSize: isSize64 * 64,
+        onShowDialog: false,
+        lightPixel: {}
+    }
+    updateSkinCounter();    
+
+    const skinElement = new CreateNode('div')
+    .insertToNode(GetElement.id('skin-items-container'), 0)
+    .setAttribute({
+        class: 'skin-items',
+        skinID: skinID
+    })
+    .addHTML(/*html*/`
+    <img id="skinPreview" draggable="false" src="${data}">
+    <input id="skinName" value="${name.split('.')[0]}" type="text" class="skinName" placeholder="Your skin name">
+    <button class="editTotemLightning squareButton" id="skinEditor" style="display: none;">
+        <img src="./src/texture/pen.png">
+    </button>
+    <div class="skin-option-section">
+        <button id="big_hand" class="skinTypeButton skinTypeButtonActive">BIG</button>
+        <button id="small_hand" class="skinTypeButton">SMALL</button>
+        <button id="remove" class="removeTotem squareButton">
+            <img class="empty" src="./src/texture/is_empty.ico">
+            <img class="bocchi" src="./src/texture/is_has_trash.ico">
+        </button>
+    </div>`).getChild('remove', (removeNode) => removeNode.setEvent({
+        click: () => {
+            delete skinData[skinID];
+            updateSkinCounter();
+            skinElement.setAnimate([
+                {
+                    duration: 150,
+                    css: {
+                        opacity: 0,
+                        left: "-100%"
+                    }
+                },
+                {
+                    duration: 250,
+                    css: {
+                        height: '0px',
+                        padding: '0px',
+                        marginBottom: '0px'
+                    }
+                }
+            ], (node) => node.release());
+        }
+    }))
+    .setAnimate([
+        {
+            duration: 10,
+            css: {
+                overflow: 'hidden',
+                padding: '0px',
+                transition: '0.3s',
+                height: '0px',
+                opacity: 0
+            }
+        },
+        {
+            duration: 250,
+            css: {
+                height: '90px',
+                padding: '',
+                margin: ''
+            }
+        },
+        {
+            duration: 250,
+            css: {
+                opacity: 1
+            }
+        }
+    ])
+
+    ElementToggle.createRatio([
+        GetElement.id('big_hand', skinElement.getNode()),
+        GetElement.id('small_hand', skinElement.getNode())
+    ], 'skinTypeButtonActive', 0, (e, i) => skinData[skinID].smallHand = (i === 1)).setValue(isSmallHand * 1);
+
+    skinElement.getChild('skinEditor', (node) => {
+        node.setEvent({
+            click: () => skinEditor.show(skinData[skinID])
+        })
+    }).getChild('skinName', (node) => {
+        node.setEvent({
+            input: (e) => skinData[skinID].name = e.currentTarget.value
+        })
+    })
+}
+
+const onSkinImported = (data, name) => {
+    ImageHandle.getImageData(data, (imageData, size) => {
+        if ([64, 128].includes(size.width) && [64, 128].includes(size.height)) onFileImported(data, name, imageData, size.width / 64);
+    })
+}
+
+ImportFile.setup(document.body,
+onSkinImported,
+'image/png', false, false, 80,
+() => {
+    new CreateNode(GetElement.id('drop-file-here')).setCSS({display: ''});
+},
+() => {
+    new CreateNode(GetElement.id('drop-file-here')).setCSS({display: 'none'});
+})
+ImportFile.setup(GetElement.id('importImage'), onSkinImported, 'image/png', false, true, 80);
+
+// new CreateNode(GetElement.id('platform')).setEvent({
+//     click: e => GetElement.id('flatformText').innerText = (skinOptions.isJava = !skinOptions.isJava) ? 'Java' : 'Bedrock'
+// })
+
+new CreateNode(GetElement.id('download')).setEvent({
+    click: () => {
+        if (Object.keys(skinData).length === 0) alert('Please import at least 1 skin to download');
+        else {
+            const uuid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            console.log(uuid);
+            multiFetch({
+                bedrockSrc: {
+                    packs: {
+                        'manifest.json': async (v) => {
+                            const data = await v.json();
+                            for (const dataKey of Object.keys(skinData)) {
+                                data.subpacks.push(
+                                    {
+                                        folder_name: dataKey,
+                                        name: skinData[dataKey].name,
+                                        memory_tier: 1
+                                    }
+                                )
+                            }
+                            data.header.name = skinOptions.packname;
+                            data.header.uuid = "$$$$$$$$-$$$$-$$$$-$$$$-$$$$$$$$$$$$".replaceAll(/\$/g, () => Math.floor(Math.random() * 16).toString(16));
+                            return JSON.stringify(data);
+                        },
+                        animations: {
+                            'totem_firstperson.json': async (v) => {
+                                return JSON.stringify((await v.json()))
+                            },
+                            'totem.json': async (v) => {
+                                return JSON.stringify((await v.json()))
+                            }
+                        },
+                        attachables: {
+                            'totem.json': async (v) => {
+                                return JSON.stringify((await v.json()))
+                            }
+                        },
+                        render_controllers: {
+                            'totem.render_controllers.json': async (v) => {
+                                return JSON.stringify((await v.json()))
+                            }
+                        }
+                    },
+                    model: {
+                        'totem_left_slim.geo.json': async (v) => {
+                            return JSON.stringify((await v.json()))
+                        },
+                        'totem_left_small.geo.json': async (v) => {
+                            return JSON.stringify((await v.json()))
+                        },
+                        'totem_right_slim.geo.json': async (v) => {
+                            return JSON.stringify((await v.json()))
+                        },
+                        'totem_right_small.geo.json': async (v) => {
+                            return JSON.stringify((await v.json()))
+                        }
+                    }
+                }
+            }).then(v => {
+                const subpacks = {};
+                Object.keys(skinData).forEach(e => {
+                    const data = skinData[e];
+                    subpacks[e] = {
+                        'totem.png': [ data.data.split(',')[1] ],
+                        'texts': {
+                            'en_US.lang': `item.totem.name=${data.name}`
+                        }
+                    };
+                    if (data.smallHand) {
+                        const totem = JSON.parse(v.bedrockSrc.packs.attachables['totem.json']);
+                        totem['minecraft:attachable'].description.geometry = {
+                            totem_left: 'geometry.asa_small_totem_left',
+                            totem_right: 'geometry.asa_small_totem_right'
+                        }
+                        subpacks[e]['attachables'] = {
+                            'totem.json': JSON.stringify(totem)
+                        }
+                    }
+                });
+                new ObjectToZip({
+                    ...v.bedrockSrc.packs,
+                    models: {
+                        entity: {
+                            ...v.bedrockSrc.model
+                        }
+                    },
+                    subpacks
+                }).download(`${skinOptions.packname}.mcpack`);
+            })
+        }
+    }
+})

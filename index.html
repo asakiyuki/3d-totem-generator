@@ -2,154 +2,98 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Totem Generator</title>
-
-    <link rel="stylesheet" href="./src/style/main.css">
-    <link rel="icon" type="image/x-icon" href="./src/texture/icon.webp">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="./libarries/jszip.min.js"></script>
+    <script src="./libarries/jszip_object.js"></script>
+    <script src="./libarries/quickElement.js"></script>
+    <script src="./libarries/multiFetch.js"></script>
+    <script src="./libarries/XML.js"></script>
     <style>
         @font-face {
             font-family: minecraft;
-            src: url('./src/font/minecraft.otf');
+            src: url("./src/font/minecraft.otf");
         }
 
         @font-face {
             font-family: minecraft-ten;
-            src: url('./src/font/minecraft-ten.ttf');
+            src: url("./src/font/minecraft-ten.ttf");
         }
     </style>
-
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="3D Totem Generator">
-    <meta property="og:description"
-        content="Creating your own totem resource pack with player skin or picture in Minecraft">
-    <meta property="og:image" content="https://i.imgur.com/oGv0nbN.jpeg">
-    <meta property="og:url" content="https://asakizuki.github.io/3d-totem-generator/">
-
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:title" content="3D Totem Generator">
-    <meta property="twitter:description"
-        content="Creating your own totem resource pack with player skin or picture in Minecraft">
-    <meta property="twitter:image" content="https://i.imgur.com/oGv0nbN.jpeg">
-    <meta property="twitter:url" content="https://asakizuki.github.io/3d-totem-generator/">
-
-    <script src="./libarries/jszip.min.js"></script>
 </head>
 
 <body>
-    <div class="header">3D Totem Generator</div>
-    <div class="content">
-        <div class="description">
-            Creating your own totem resource pack with player skin or picture in Minecraft<br>
-            + Creator: <a href="https://www.youtube.com/channel/UCHzsPoSM57s-VvQy_D6f8ow" target="_blank"
-                class="link">Asaki Zuki</a> (<a href="https://www.facebook.com/profile.php?id=100050536430736"
-                target=" _blank" class="link">Facebook</a>)<br>
-            + Translator: <a href="https://www.facebook.com/profile.php?id=100036150383726" target="_blank"
-                class="link">Vũ Phúc</a><br>
-            + Source Code: <a href="https://github.com/asakizuki/3d-totem-generator" target="_blank"
-                class="link">Github</a>
+    <div class="body">
+        <div id="drop-file-here" style="display: none;">
+            <a style="font-family: minecraft-ten; font-size: 25px; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);">Upload your skin</a>
         </div>
+        <header class="websiteHeader">3D Totem Generator</header>
+        <div class="scrollAble">
+            <div class="verticle-stack dropdown">
+                <button type="button" class="dropdown-toggle">
+                    <span>Website Info</span>
+                    <div class="dropdown-arrow"></div>
+                </button>
 
-        <div class="description">
-            <div class="title">How to use this tool</div>Very easy to use, just import your most-liked skin and download
-            it!
-        </div>
-
-        <div class="description">
-            <div class="title">What is Skin Type?</div>Skin Type is a feature which changes its arm size. Normally, "Big
-            Hand" is for male skin and "small hand" is for female one.
-        </div>
-
-        <div class="toggle_element" id="nf3d">
-            <div class="label"> <a class="name">Not for 3D Totem</a><br><a class="decs">If 3D totem is not your type,
-                    you can try this option</a> </div><input type="checkbox" id="notfor3dtotem">
-            <div class="toggle"></div>
-        </div>
-
-        <div class="toggle_element" style="display: none">
-            <div class="label"> <a class="name">Player Name</a><br><a class="decs">Using other Minecraft: Java Edition
-                    player's skin to create totem
-                </a> </div><input type="checkbox" id="usePlayerName">
-            <div class="toggle"></div>
-        </div>
-
-        <div id="light_totem_toggle" class="toggle_element" style="margin-bottom: 8px;">
-            <div class="label"> <a class="name">Lightning Totem</a><br><a class="decs">Create a Totem that can emit its
-                    own
-                    light in the darkness </a> </div><input type="checkbox" id="glowTotemToggle">
-            <div class="toggle"></div>
-        </div>
-
-        <div class="importSkin" id="ipSkinE" style="margin-top: 8px;">
-            <div class="btn" id="importSkinElement">
-                <input id="selectedSkinImage" type="file" width="48" height="48" accept="image/png" title="">
-                <button>Import Skin</button>
-                <div class="filename"><a id="filename">No file chosen</a></div>
-            </div>
-
-            <div class="btn" id="inputText" style="display: none;">
-                <input style="top: 11px;" class="textInput" id="playerName"
-                    placeholder="Player Name &#60;Example: AsakiZukiYT&#62;">
-                <button id="getSkin"
-                    style="position: absolute; width: calc(100% - 12px); bottom: 0px; margin-top: 59px;">
-                    Get Skin</button>
-            </div>
-
-            <img draggable="false" class="previewImage" id="skinRenderer">
-            <img style="display: none;" id="editableImage" src="./src/texture/pen.png">
-        </div>
-
-        <div class="selectedButton" id="skinTypeSelected">
-            <a>Skin Type</a>
-
-            <div class="skinTypeSelectedButton">
-                <button id="setToBigHand" class="active">Big Hand</button>
-                <button id="setToSmallHand">Small Hand</button>
-            </div>
-        </div>
-
-        <div class="selectedButton withImportTexture" id="setTotemTexture">
-            <a class="totemTextureSelectedButton">Totem Texture</a>
-
-            <div class="totemTextureSelectedButton" id="totemTextureMode">
-                <button id="automatic" class="active">Automatic</button>
-                <button id="vanilla_texture">Vanilla</button>
-                <button id="custom_texture">Custom</button>
-            </div>
-
-            <div class="importSkin" id="importTextureElementPanel">
-                <div id="importTexturePanel" class="btn inputDisable">
-                    <input id="selectedTextureImage" type="file" width="48" height="48" accept="image/*" title="">
-                    <button>Import Texture</button>
-                    <div class="filename"><a id="filename2">No file chosen</a></div>
+                <div class="dropdown-content">
+                    <div style="position: relative; left: 5px;">
+                        <a style="font-family: minecraft-ten; font-size: 20px;">Info</a><br>
+                        <a style="font-family: minecraft;">Developer: Asaki Yuki</a><br>
+                        <a style="font-family: minecraft;">Source code: <a href="https://github.com/asakiyuki/3d-totem-generator" style="color: #0FF;">Github</a><br>
+                        <a style="font-family: minecraft-ten; font-size: 20px">What is this website?</a><br>
+                        <a style="font-family: minecraft;">This website using for create your own totem resource pack with player skin or picture in Minecraft</a><br>
+                        <a style="font-family: minecraft-ten; font-size: 20px">How to use this tool</a><br>
+                        <a style="font-family: minecraft;">Very easy to use, just drag and drop on this website or select your most-liked skins and download it!</a><br>
+                    </div>
                 </div>
-                <img draggable="false" class="previewImage" id="totemTextureRenderer">
+            </div>
+
+            <div class="verticle-stack skinList importElement">
+                <input id="importImage" type="file" title="">
+                <div class="importImageText">
+                    <a>Click here to select a file or Drag and Drop on this website to Import skin</a>
+                </div>
+            </div>
+
+            <div id="skinDropdown" class="verticle-stack skinList">
+                <div class="skin-items" style="text-align: center;">
+                    <a id="skinCounter">0 skins imported!</a>
+                </div>
+                <div id="skin-items-container" style="position: static; width: 100%; overflow: hidden;">
+                </div>
+                <div style="height: 5px;"></div>
+            </div>
+
+            <div class="verticle-stack skinList downloadPackage">
+                <button id="platform"><span id="flatformText">Bedrock</span></button>
+                <input type="text" placeholder="Pack name..." id="packName">
+                <button id="download"><span>Download</span></button>
             </div>
         </div>
+    </div>
 
-        <div class="selectedButton">
-            <a>Minecraft Version</a>
-            <div class="skinTypeSelectedButton">
-                <button id="bedrockVersion" class="active">Bedrock</button>
-                <button id="javaVersion">Java</button>
+    <div id="skinEditorDialog">
+        <div class="editorContent">
+            <div class="editorLabel">
+                <span id="title">Skin Editor: ${SkinName}</span>
+            </div>
+            
+            <div class="imageEditorScreen">
+                <div id="editor" class="imageEditor">
+                    <div id="rendererElement" class="renderer">
+                        <img title=".-." id="editorImage" draggable="false">
+                        <div id="imagePixelSelected">
+                            <div id="pixelHover"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="buttonStack">
+                <button id="close">Save and Close</button>
             </div>
         </div>
-
-        <div class="downloadButton">
-            <button id="download">Download</button>
-            <input id="packName" placeholder="Pack name...">
-        </div>
-
-        <!-- Hidden lol -->
-        <canvas style="width: 0px; height: 0px;" width="8" height="8" id="imagePreview"></canvas>
-        <canvas style="width: 0px; height: 0px;" width="64" height="64" id="reworkTexture"></canvas>
     </div>
-
-    <div class="alert">
-        <div class="dialog"></div>
-    </div>
-
+    <!-- Import Script -->
     <script src="./src/script/main.js"></script>
     <script src="./src/script/background.js"></script>
 </body>

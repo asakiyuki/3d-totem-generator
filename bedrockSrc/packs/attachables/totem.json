@@ -4,14 +4,14 @@
         "description": {
             "identifier": "minecraft:totem_of_undying",
             "materials": {
-                "default": ""
+                "default": "blaze_head"
             },
             "textures": {
                 "default": "totem.png"
             },
             "geometry": {
-                "totem_left": "geometry.asa_totem_left",
-                "totem_right": "geometry.asa_totem_right"
+                "totem_left": "geometry.asa_slim_totem_left",
+                "totem_right": "geometry.asa_slim_totem_right"
             },
             "animations": {
                 "first_person": "animation.totem.first_person",

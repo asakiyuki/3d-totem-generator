@@ -1,7 +1,7 @@
 {
     "format_version": 2,
     "header": {
-        "description": "",
+        "description": "The Custom Totem Skin Pack made by Asaki Yuki",
         "name": "",
         "uuid": "",
         "version": [
@@ -26,6 +26,7 @@
             ]
         }
     ],
+    "subpacks": [],
     "metadata": {
         "authors": [
             "Asaki Zuki"

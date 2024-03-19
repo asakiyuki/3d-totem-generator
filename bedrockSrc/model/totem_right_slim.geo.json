@@ -3,7 +3,7 @@
 	"minecraft:geometry": [
 		{
 			"description": {
-				"identifier": "geometry.asa_totem_right",
+				"identifier": "geometry.asa_slim_totem_right",
 				"texture_width": 64,
 				"texture_height": 64,
 				"visible_bounds_width": 3,
