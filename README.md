@@ -9,7 +9,7 @@ _Customize your own totem resource packs without coding_
   + Import multiple skins in one resource pack
     + You can also add or remove any totem skin
     + Totem skin can be changed in the subpacks option
-  + Upload the zip/mcpack file to the website to add more totems for your resource pack (Only applicable to custom Totem packages version 2.0.0 or higher used using this website)
+  + Upload the zip/mcpack file to the website to add more totems for your resource pack (Only applicable to custom Totem packs version 2.0.0 or higher used this website)
   
 [**Website Here**](https://asakiyuki.github.io/3d-totem-generator/)
 
