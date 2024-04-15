@@ -1,6 +1,8 @@
 **3D Totem Generator**
 
-_Customize your own totem resource packs without coding_
+_The easiest method to custom Totem Skin resource packs using player skins!
+And can also upload to MCPEDL_
+
 + Creator: [Asaki Yuki](https://www.youtube.com/@asakizuki)
 
 - Features:
