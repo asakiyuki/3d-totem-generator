@@ -1,7 +1,7 @@
 **3D Totem Generator**
 
 _Customize your own totem resource packs without coding_
-+ Creator: [Asaki Zuki](https://www.youtube.com/@asakizuki)
++ Creator: [Asaki Yuki](https://www.youtube.com/@asakizuki)
 
 - Features:
   + Alex/Steve skin options
