@@ -1,9 +1,18 @@
 **3D Totem Generator**
 
-_Creating your own totem resource pack with player skin or picture in Minecraft_
-+ Creator: [Asaki Zuki](https://www.youtube.com/@asakizuki)
-+ Translator: [Phúc Vũ](https://www.facebook.com/profile.php?id=100036150383726)
+_The easiest method to custom Totem Skin resource packs using player skins!
+And can also upload to MCPEDL_
 
-[**Website Here**](https://asakizuki.github.io/3d-totem-generator/)
++ Creator: [Asaki Yuki](https://www.youtube.com/@asakizuki)
 
-![image](https://github.com/asakizuki/3d-totem-generator/assets/108646953/bf39d793-b3a6-41b9-b5de-9efb8b561fd8)
+- Features:
+  + Alex/Steve skin options
+  + Customize totem name and resource pack name
+  + Import multiple skins in one resource pack
+    + You can also add or remove any totem skin
+    + Totem skin can be changed in the subpacks option
+  + Upload the zip/mcpack file to the website to add more totems for your resource pack (Only applicable to custom Totem packs version 2.0.0 or higher used this website)
+  
+- [_Let's custom your own totem resource pack XD_](https://asakiyuki.github.io/3d-totem-generator/)
+
+![image](https://github.com/asakiyuki/3d-totem-generator/assets/108646953/700f1f64-7695-4241-986c-d636c3b7d662)
