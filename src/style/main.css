@@ -304,7 +304,7 @@ input#importImage {
   cursor: pointer;
 }
 
-input#importImage:hover + div.importImageText{
+input#importImage:hover+div.importImageText {
   background-color: #FFF1;
 }
 
@@ -327,7 +327,7 @@ div.importImageText a {
 }
 
 button.editTotemLightning {
-  display: none,
+  display: none;
   transition: 0.5s;
   position: absolute;
   background-color: #FFF4;
@@ -368,6 +368,7 @@ button.squareButton:hover img.emppty {
   visibility: hidden;
   opacity: 0;
 }
+
 /* Skin Editor */
 div#skinEditorDialog {
   overflow: hidden;
@@ -542,9 +543,11 @@ div#imagePixelSelected {
   0% {
     border-color: #000;
   }
+
   50% {
     border-color: #FFF;
   }
+
   100% {
     border-color: #000;
   }

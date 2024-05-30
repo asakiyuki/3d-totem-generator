@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="./libarries/jszip.min.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7973292949337869"
+        crossorigin="anonymous"></script>
     <script src="https://asakiyuki.vercel.app/lib/HTMNode.min.js"></script>
     <script src="https://asakiyuki.vercel.app/lib/JSZipByObject.min.js"></script>
     <script src="https://asakiyuki.vercel.app/lib/FetchObject.min.js"></script>
@@ -18,9 +20,16 @@
             src: url("./src/font/minecraft-ten.ttf");
         }
     </style>
+
+    <link rel="stylesheet" href="./src/style/loading.css">
 </head>
 
 <body>
+    <div id="loadingScreen">
+        <div class="centerCircleScreen">
+            <div class="loadingCircle"></div>
+        </div>
+    </div>
     <div class="body">
         <div id="drop-file-here" style="display: none;">
             <a
