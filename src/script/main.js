@@ -7,7 +7,7 @@
  */
 
 {
-    PageDisplay.setTitle('3D Totem Generator').setIcon('./src/texture/icon.webp').setGraph({ facebook: { title: '3D Totem Generator', type: 'website', description: 'Creating your own totem resource pack with player skin or picture in Minecraft', image: 'https://i.imgur.com/oGv0nbN.jpeg', url: 'https://asakiyuki.github.io/3d-totem-generator/' }, twitter: { card: 'summary_large_image', title: '3D Totem Generator', description: 'Creating your own totem resource pack with player skin or picture in Minecraft', image: 'https://i.imgur.com/oGv0nbN.jpeg', url: 'https://asakiyuki.github.io/3d-totem-generator/' } }).importCSS('./src/style/main.css')
+    PageDisplay.setTitle('3D Totem Generator').setIcon('https://asakiyuki.vercel.app/favicon.ico').setGraph({ facebook: { title: '3D Totem Generator', type: 'website', description: 'Creating your own totem resource pack with player skin or picture in Minecraft', image: 'https://i.imgur.com/oGv0nbN.jpeg', url: 'https://asakiyuki.github.io/3d-totem-generator/' }, twitter: { card: 'summary_large_image', title: '3D Totem Generator', description: 'Creating your own totem resource pack with player skin or picture in Minecraft', image: 'https://i.imgur.com/oGv0nbN.jpeg', url: 'https://asakiyuki.github.io/3d-totem-generator/' } }).importCSS('./src/style/main.css')
 }
 
 const skinOptions = {
